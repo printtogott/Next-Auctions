@@ -27,7 +27,7 @@ const nextConfig: NextConfig = {
   domains: [
     "api.microlink.io", // Microlink Image Preview
   ],
-  // Disable production webpack cache to prevent the 130 MiB 0.pack file from breaking Cloudflare Pages
+  // Disable production webpack cache to prevent the 130 MiB 0.pack file from breaking Cloudflare Pagess
   webpack: (config, { dev }) => {
     if (!dev) {
       config.cache = false;
