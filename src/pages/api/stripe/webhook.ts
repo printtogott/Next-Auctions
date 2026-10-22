@@ -5,6 +5,9 @@ export const config = {
   runtime: "edge",
 };
 
+runtime: "edge",
+};
+
 , runtime: "edge" };
 
 import { buffer } from "micro";
@@ -43,7 +46,6 @@ export default async function handler(
   } catch (err) {
     console.error(`Webhook Error: ${(err as Error).message}`);
     return res.status(400).send(`Webhook Error: ${(err as Error).message}`);
-  }
 
   // Step 4: Handle checkout session completion
   if (event.type === "checkout.session.completed") {
@@ -55,7 +57,6 @@ export default async function handler(
     if (!auctionId) {
       console.warn("Webhook received without auctionId in metadata");
       return res.status(400).send("Missing auctionId");
-    }
 
     // Step 5: Update auction's paidAt timestamp in DB
     try {
@@ -67,12 +68,10 @@ export default async function handler(
     } catch (err) {
       console.error(`Update Error: ${(err as Error).message}`);
       return res.status(500).send(`Update Error: ${(err as Error).message}`);
-    }
-  }
+
 
   // Step 6: Return 200 for all events to prevent Stripe from retrying
   return res.status(200).send("OK");
-}
 
 /** Tested locally with
   - stripe trigger checkout.session.completed
