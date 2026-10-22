@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { useLingui } from "@lingui/react/macro";
 import type { SearchParams } from "nuqs";
 import { type FC, Suspense } from "react";

@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { Trans } from "@lingui/react/macro";
 import { redirect } from "next/navigation";
 import type { FC } from "react";

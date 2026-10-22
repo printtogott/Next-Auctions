@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { type FC, Suspense } from "react";
 import { SkeletonAuctionDetails } from "@/app/_components/skeletons/skeleton-auction-details";
 import type { Auction } from "@/core/domains/auction";

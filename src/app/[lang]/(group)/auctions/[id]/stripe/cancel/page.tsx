@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import type { FC } from "react";
 import { type LangParam, withI18n } from "@/i18n";
 import { StripeServer } from "../_components/stripe-server";

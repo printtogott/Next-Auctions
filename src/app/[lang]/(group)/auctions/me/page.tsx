@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import type { SearchParams } from "nuqs/server";
 import { type FC, Suspense } from "react";
 import { AuctionsStatsServer } from "@/app/_components/auctions/auctions-stats-server";

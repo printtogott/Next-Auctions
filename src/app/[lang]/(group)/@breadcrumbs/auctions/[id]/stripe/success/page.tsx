@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { Trans } from "@lingui/react/macro";
 import Link from "next/link";
 import type { FC } from "react";

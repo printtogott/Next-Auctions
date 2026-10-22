@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import type { SearchParams } from "nuqs/server";
 import { type FC, Suspense } from "react";
 import { SkeletonAuctionsStats } from "@/app/_components/skeletons/skeleton-auctions-stats";
