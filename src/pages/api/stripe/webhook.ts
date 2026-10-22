@@ -2,7 +2,7 @@ export const config = {
   api: {
     bodyParser: false,
   },
-  runtime: "edge",
+  runtime: "nodejs",
 };
 
 import { buffer } from "micro";
