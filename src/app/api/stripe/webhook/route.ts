@@ -1,40 +1,19 @@
-import type { NextRequest } from "next/server";
-import Stripe from "stripe";
-
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY ?? "";
-const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? "";
-
-const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2025-11-17.clover",
-});
+import type { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const signature = req.headers.get("stripe-signature");
-  if (!signature) {
-    return new Response("Missing signature", { status: 400 });
-  }
-
   try {
-    const bodyText = await req.text();
-    const event = await stripe.webhooks.constructEventAsync(
-      bodyText,
-      signature,
-      stripeWebhookSecret
-    );
-
-    switch (event.type) {
-      case "checkout.session.completed":
-        const session = event.data.object as Stripe.Checkout.Session;
-        // TODO: fulfill order / update supabase
-        break;
-      default:
-        console.warn(`Unhandled event type ${event.type}`);
-    }
-
+    const body = await req.json();
+    console.log("Webhook received event type:", body?.type);
+    
     return Response.json({ received: true }, { status: 200 });
   } catch (err: any) {
-    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+    return new Response("Webhook Error", { status: 400 });
   }
+}
+
+export async function GET() {
+  return new Response("OK", { status: 200 });
 }
