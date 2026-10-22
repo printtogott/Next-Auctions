@@ -1,8 +1,6 @@
-export const config = {
-  runtime: "edge",
-};
+export const runtime = "edge";
 
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextRequest } from "next/server";
 import Stripe from "stripe";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY ?? "";
@@ -12,14 +10,10 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: "2025-11-17.clover",
 });
 
-export default async function handler(req: Request) {
-  if (req.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
-  }
-
+export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
   if (!signature) {
-    return new Response("Missing stripe-signature header", { status: 400 });
+    return new Response("Missing signature", { status: 400 });
   }
 
   try {
@@ -39,10 +33,7 @@ export default async function handler(req: Request) {
         console.warn(`Unhandled event type ${event.type}`);
     }
 
-    return new Response(JSON.stringify({ received: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return Response.json({ received: true }, { status: 200 });
   } catch (err: any) {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
