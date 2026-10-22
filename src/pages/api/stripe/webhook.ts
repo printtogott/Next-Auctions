@@ -1,11 +1,7 @@
 export const config = {
-  api: {
-    bodyParser: false,
-  },
-  runtime: "nodejs",
+  runtime: "edge",
 };
 
-import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
@@ -16,32 +12,38 @@ const stripe = new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: "2025-11-17.clover",
 });
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: Request) {
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).end("Method Not Allowed");
+    return new Response("Method Not Allowed", { status: 405 });
   }
 
-  const buf = await buffer(req);
-  const sig = req.headers["stripe-signature"] as string;
-
-  let event: Stripe.Event;
+  const signature = req.headers.get("stripe-signature");
+  if (!signature) {
+    return new Response("Missing stripe-signature header", { status: 400 });
+  }
 
   try {
-    event = stripe.webhooks.constructEvent(buf, sig, STRIPE_WEBHOOK_SECRET);
+    const bodyText = await req.text();
+    const event = await stripe.webhooks.constructEventAsync(
+      bodyText,
+      signature,
+      STRIPE_WEBHOOK_SECRET
+    );
+
+    switch (event.type) {
+      case "checkout.session.completed":
+        const session = event.data.object as Stripe.Checkout.Session;
+        // TODO: fulfill order / update supabase
+        break;
+      default:
+        console.warn(`Unhandled event type ${event.type}`);
+    }
+
+    return new Response(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err: any) {
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
-
-  // Handle the event
-  switch (event.type) {
-    case "checkout.session.completed":
-      const session = event.data.object as Stripe.Checkout.Session;
-      // TODO: fulfill order / update supabase
-      break;
-    default:
-      console.warn(`Unhandled event type ${event.type}`);
-  }
-
-  return res.status(200).json({ received: true });
 }
