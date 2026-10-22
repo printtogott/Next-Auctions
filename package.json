@@ -6,8 +6,8 @@
   "description": "Full-stack auction platform built with Next.js, Supabase, Stripe, and real-time bidding.",
   "license": "MIT",
   "scripts": {
-"dev": "next dev",
-    "build": "pnpm exec @cloudflare/next-on-pages",
+    "dev": "next dev",
+    "build": "npx @cloudflare/next-on-pages",
     "build:local": "pnpm test && next build",
     "start": "next start",
     "supabase:start": "pnpx supabase start",
