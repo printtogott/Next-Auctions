@@ -1,53 +1,14 @@
-export const runtime = "edge";
-
 import type { NextRequest } from "next/server";
+import Stripe from "stripe";
 
-const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? "";
+export const dynamic = "force-dynamic";
 
-async function verifyStripeSignature(payload: string, sigHeader: string, secret: string): Promise<boolean> {
-  try {
-    const parts = sigHeader.split(",");
-    let timestamp = "";
-    let signature = "";
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY ?? "";
+const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? "";
 
-    for (const part of parts) {
-      const [key, value] = part.split("=");
-      if (key === "t") timestamp = value;
-      if (key === "v1") signature = value;
-    }
-
-    if (!timestamp || !signature) return false;
-
-    // Check timestamp tolerance (e.g., 5 minutes)
-    const timeDiff = Math.abs(Math.floor(Date.now() / 1000) - parseInt(timestamp, 10));
-    if (timeDiff > 300) return false;
-
-    const signedPayload = `${timestamp}.${payload}`;
-    const encoder = new TextEncoder();
-    
-    const key = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(secret),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-
-    const mac = await crypto.subtle.sign(
-      "HMAC",
-      key,
-      encoder.encode(signedPayload)
-    );
-
-    const expectedSignature = Array.from(new Uint8Array(mac))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-
-    return expectedSignature === signature;
-  } catch (err) {
-    return false;
-  }
-}
+const stripe = new Stripe(stripeSecretKey, {
+  apiVersion: "2025-11-17.clover",
+});
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
@@ -57,17 +18,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const bodyText = await req.text();
-    const isValid = await verifyStripeSignature(bodyText, signature, STRIPE_WEBHOOK_SECRET);
-
-    if (!isValid) {
-      return new Response("Webhook Signature Verification Failed", { status: 400 });
-    }
-
-    const event = JSON.parse(bodyText);
+    const event = await stripe.webhooks.constructEventAsync(
+      bodyText,
+      signature,
+      stripeWebhookSecret
+    );
 
     switch (event.type) {
       case "checkout.session.completed":
-        const session = event.data.object;
+        const session = event.data.object as Stripe.Checkout.Session;
         // TODO: fulfill order / update supabase
         break;
       default:
