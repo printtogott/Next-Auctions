@@ -1,4 +1,11 @@
-export const config = { api: { bodyParser: false }, runtime: "edge" };
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+  runtime: "edge",
+};
+
+, runtime: "edge" };
 
 import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -8,7 +15,6 @@ import { updateAuctionPaidAt } from "@/actions/auctions/update-auction-paid-at";
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY ?? "";
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? "";
 
-,
 };
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
