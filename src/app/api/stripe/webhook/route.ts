@@ -3,14 +3,14 @@ export const runtime = "edge";
 import type { NextRequest } from "next/server";
 import Stripe from "stripe";
 
-const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY ?? "";
-const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? "";
-
-const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: "2025-11-17.clover",
-});
-
 export async function POST(req: NextRequest) {
+  const stripeSecretKey = process.env.STRIPE_SECRET_KEY ?? "";
+  const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? "";
+
+  const stripe = new Stripe(stripeSecretKey, {
+    apiVersion: "2025-11-17.clover",
+  });
+
   const signature = req.headers.get("stripe-signature");
   if (!signature) {
     return new Response("Missing signature", { status: 400 });
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     const event = await stripe.webhooks.constructEventAsync(
       bodyText,
       signature,
-      STRIPE_WEBHOOK_SECRET
+      stripeWebhookSecret
     );
 
     switch (event.type) {
