@@ -5,9 +5,6 @@ export const config = {
   runtime: "edge",
 };
 
-runtime: "edge",
-};
-
 import { buffer } from "micro";
 import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
