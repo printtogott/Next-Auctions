@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
 "dev": "next dev",
-    "build": "npx @cloudflare/next-on-pages",
+    "build": "pnpm exec @cloudflare/next-on-pages",
     "build:local": "pnpm test && next build",
     "start": "next start",
     "supabase:start": "pnpx supabase start",
