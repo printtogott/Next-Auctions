@@ -5,15 +5,16 @@ import type { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    console.log("Webhook received event type:", body?.type);
-    
-    return Response.json({ received: true }, { status: 200 });
+    const text = await req.text();
+    return Response.json({ received: true, bodyLength: text.length }, { status: 200 });
   } catch (err: any) {
-    return new Response("Webhook Error", { status: 400 });
+    return new Response(JSON.stringify({ error: err.message, stack: err.stack }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
 
 export async function GET() {
-  return new Response("OK", { status: 200 });
+  return new Response("Webhook is live", { status: 200 });
 }
