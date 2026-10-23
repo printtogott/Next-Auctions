@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { setI18n } from "@lingui/react/server";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
