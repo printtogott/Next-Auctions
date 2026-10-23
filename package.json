@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "npx @cloudflare/next-on-pages",
+    "build": "next build",
     "build:local": "pnpm test && next build",
     "start": "next start",
     "supabase:start": "pnpx supabase start",
@@ -22,7 +22,8 @@
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "pages:build": "npx @cloudflare/next-on-pages"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
