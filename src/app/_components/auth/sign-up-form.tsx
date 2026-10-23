@@ -7,11 +7,11 @@ import { type FC, startTransition, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { createClient } from "@/utils/supabase/client"; // Or your standard client import path
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,7 +29,6 @@ type Props = {
 
 export const SignUpForm: FC<Props> = (props) => {
   const { onCloseSideSheet } = props;
-
   const { t } = useLingui();
 
   const form = useForm<FormSchema>({
@@ -47,23 +46,26 @@ export const SignUpForm: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (values: FormSchema) => {
       try {
-        const response = await fetch("/api/auth/sign-up", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
+        const supabase = createClient();
+        
+        const { data, error } = await supabase.auth.signUp({
+          email: values.email,
+          password: values.password,
+          options: {
+            data: {
+              first_name: values.firstName,
+              last_name: values.lastName,
+            },
+          },
         });
 
-        const result = await response.json();
+        if (error) throw error;
 
         startTransition(() => {
           onCloseSideSheet();
         });
 
-        if (response.ok && result.success) {
-          toast.success(t`You successfully signed up!`);
-        } else {
-          throw new Error(result.error || result.message || "Failed to sign up");
-        }
+        toast.success(t`You successfully signed up! Please check your email for verification.`);
       } catch (err: any) {
         console.error(err);
         toast.error(err.message || t`Something went wrong, please try again later.`);
@@ -80,9 +82,7 @@ export const SignUpForm: FC<Props> = (props) => {
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <Trans>First name</Trans>
-              </FormLabel>
+              <FormLabel><Trans>First name</Trans></FormLabel>
               <FormControl>
                 <Input placeholder="jane doe" {...field} />
               </FormControl>
@@ -96,9 +96,7 @@ export const SignUpForm: FC<Props> = (props) => {
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <Trans>Last name</Trans>
-              </FormLabel>
+              <FormLabel><Trans>Last name</Trans></FormLabel>
               <FormControl>
                 <Input placeholder="Doe" {...field} />
               </FormControl>
@@ -112,15 +110,9 @@ export const SignUpForm: FC<Props> = (props) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <Trans>Email</Trans>
-              </FormLabel>
+              <FormLabel><Trans>Email</Trans></FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  placeholder="jane.doe@gmail.com"
-                  {...field}
-                />
+                <Input type="email" placeholder="jane.doe@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -132,9 +124,7 @@ export const SignUpForm: FC<Props> = (props) => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <Trans>Password</Trans>
-              </FormLabel>
+              <FormLabel><Trans>Password</Trans></FormLabel>
               <FormControl>
                 <Input type="password" placeholder="******" {...field} />
               </FormControl>
