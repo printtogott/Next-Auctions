@@ -7,7 +7,6 @@ import { type FC, startTransition, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { signUp } from "@/actions/auth/sign-up";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -48,20 +47,26 @@ export const SignUpForm: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (values: FormSchema) => {
       try {
-        const result = await signUp(values);
+        const response = await fetch("/api/auth/sign-up", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+
+        const result = await response.json();
 
         startTransition(() => {
           onCloseSideSheet();
         });
 
-        if (result.success) {
+        if (response.ok && result.success) {
           toast.success(t`You successfully signed up!`);
         } else {
-          throw new Error(result.message);
+          throw new Error(result.error || result.message || "Failed to sign up");
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error(err);
-        toast.error(t`Something went wrong, please try again later.`);
+        toast.error(err.message || t`Something went wrong, please try again later.`);
       }
     },
     [t, onCloseSideSheet],
