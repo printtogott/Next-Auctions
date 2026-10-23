@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  experimental: {
+    experimental: {
     globalNotFound: true,
     // to use Lingui macros
     swcPlugins: [["@lingui/swc-plugin", {}]],
