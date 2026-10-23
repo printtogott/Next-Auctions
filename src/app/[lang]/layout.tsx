@@ -1,4 +1,3 @@
-export const runtime = "edge";
 import { setI18n } from "@lingui/react/server";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
