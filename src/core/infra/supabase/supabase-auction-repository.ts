@@ -198,7 +198,7 @@ export class SupabaseAuctionRepository implements AuctionRepository {
       storageId,
     } = params;
 
-    const client = await createClient();
+    const client = createWithServiceRoleSupabaseClient();
 
     const { data: auction, error } = await client
       .from("auctions")
