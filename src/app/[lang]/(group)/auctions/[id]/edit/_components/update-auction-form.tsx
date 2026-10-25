@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import type { z } from "zod";
-import { updateAuction } from "@/actions/auctions/update-auction";
+
 import { DayPicker } from "@/app/_components/date-picker";
 import { UppyMultiUploader } from "@/app/_components/uppy/uppy-multi-uploader";
 import { Button } from "@/components/ui/button";
@@ -99,11 +99,18 @@ export const UpdateAuctionForm: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (values: FormSchema) => {
       try {
-        const result = await updateAuction(values);
+        const response = await fetch(`/api/auctions/${defaultValues.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+
+        const result = await response.json();
 
         if (result.success) {
           toast.success(t`You successfully updated your auction!`);
           router.push(`/${lang}/auctions/${result.data.id}`);
+          router.refresh();
         } else {
           throw new Error(result.message);
         }
@@ -112,7 +119,7 @@ export const UpdateAuctionForm: FC<Props> = (props) => {
         toast.error(t`Something went wrong, please try again later.`);
       }
     },
-    [t, lang, router],
+    [t, lang, router, defaultValues.id],
   );
 
   return (
