@@ -11,7 +11,7 @@ export const AuthForm: FC<Props> = (props) => {
   const { isLogin, onCloseSideSheet } = props;
 
   return isLogin ? (
-    <LoginForm onCloseSideSheet={onCloseSideSheet} />
+    <LogInForm onCloseSideSheet={onCloseSideSheet} />
   ) : (
     <SignUpForm onCloseSideSheet={onCloseSideSheet} />
   );
