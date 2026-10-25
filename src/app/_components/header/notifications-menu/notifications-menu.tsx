@@ -1,19 +1,15 @@
-import { type FC, Suspense } from "react";
-import type { User } from "@/core/domains/user";
-import { NotificationsMenuServer } from "../../real-time/notifications-menu-server";
-import { SkeletonNotificationsMenu } from "./skeleton-notifications-menu";
+"use client";
+
+import type { FC } from "react";
+import { NotificationsWithChannel } from "../../real-time/notifications-with-channel";
 
 type Props = {
-  me: User;
+  me: any;
 };
 
 export const NotificationsMenu: FC<Props> = (props) => {
   const { me } = props;
   if (!me) return null;
 
-  return (
-    <Suspense fallback={<SkeletonNotificationsMenu />}>
-      <NotificationsMenuServer me={me} />
-    </Suspense>
-  );
+  return <NotificationsWithChannel userId={me.id} initNotifications={[]} />;
 };
