@@ -49,25 +49,26 @@ export const LogInForm: FC<Props> = (props) => {
       try {
         const supabase = createClient();
         
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
 
         if (error) throw error;
 
-        toast.success(t`Successfully signed in!`);
+        toast.success("Successfully signed in!");
 
         startTransition(() => {
           if (onCloseSideSheet) onCloseSideSheet();
-          window.location.reload();
+          // Hard reload to refresh session cookies and update the navbar state
+          window.location.href = window.location.pathname;
         });
       } catch (err: any) {
         console.error(err);
-        toast.error(err.message || t`Something went wrong, please try again later.`);
+        toast.error(err.message || "Something went wrong, please try again later.");
       }
     },
-    [t, onCloseSideSheet],
+    [onCloseSideSheet],
   );
 
   return (
@@ -107,11 +108,11 @@ export const LogInForm: FC<Props> = (props) => {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <Trans>Signing in...</Trans>
+            "Signing in..."
           ) : (
             <span className="inline-flex gap-x-2 items-center">
               <ArrowRightFromLineIcon size={16} />
-              <Trans>Sign in</Trans>
+              Sign in
             </span>
           )}
         </Button>
