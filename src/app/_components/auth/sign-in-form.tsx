@@ -30,8 +30,7 @@ type Props = {
   onCloseSideSheet?: () => void;
 };
 
-export const SignInForm: FC<Props> = (props) => {
-  const { onCloseSideSheet } = props;
+export const SignInForm: FC<Props> = ({ onCloseSideSheet }) => {
   const { t } = useLingui();
 
   const form = useForm<FormSchema>({
@@ -49,7 +48,7 @@ export const SignInForm: FC<Props> = (props) => {
       try {
         const supabase = createClient();
         
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
