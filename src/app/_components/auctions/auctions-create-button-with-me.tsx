@@ -1,12 +1,33 @@
-import type { ComponentProps, FC } from "react";
+"use client";
+
+import { useEffect, useState, type ComponentProps, type FC } from "react";
 import type { Button } from "@/components/ui/button";
-import { users } from "@/core/instances/users";
+import { createClient } from "@/utils/supabase/client";
 import { AuctionsCreateButton } from "./auctions-create-button";
 
 type Props = ComponentProps<typeof Button>;
 
-export const AuctionsCreateButtonWithMe: FC<Props> = async (props) => {
-  const me = await users().me();
+export const AuctionsCreateButtonWithMe: FC<Props> = (props) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  return <AuctionsCreateButton disabled={!me} {...props} />;
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setIsAuthenticated(!!user);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session?.user);
+      setLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  return <AuctionsCreateButton disabled={loading || !isAuthenticated} {...props} />;
 };
