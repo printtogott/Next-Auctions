@@ -38,7 +38,7 @@ export const AuctionsCreateButton: FC<Props> = (props) => {
   }
 
   return (
-    <Button {...rest} type="button" variant="outline">
+    <Button {...rest} asChild variant="outline">
       <Link href={`/${lang}/auctions/new`}>
         <Trans>Create Auction</Trans>
       </Link>
