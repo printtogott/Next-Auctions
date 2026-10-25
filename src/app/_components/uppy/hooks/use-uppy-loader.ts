@@ -83,7 +83,7 @@ export const useUppyLoader = (params: Params) => {
 
     try {
       for (const file of files) {
-        const fileName = file.name;
+        const fileName = file.name ? file.name.toLowerCase() : "image.jpg";
         if (!fileName || !file.data) {
           continue;
         }
