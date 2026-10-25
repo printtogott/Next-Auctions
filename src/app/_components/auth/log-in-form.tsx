@@ -49,19 +49,27 @@ export const LogInForm: FC<Props> = (props) => {
       try {
         const supabase = createClient();
         
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
 
         if (error) throw error;
 
+        // Ensure session is active before reloading
+        if (data?.session) {
+          await supabase.auth.setSession({
+            access_token: data.session.access_token,
+            refresh_token: data.session.refresh_token,
+          });
+        }
+
         toast.success("Successfully signed in!");
 
         startTransition(() => {
           if (onCloseSideSheet) onCloseSideSheet();
-          // Hard reload to refresh session cookies and update the navbar state
-          window.location.href = window.location.pathname;
+          // Force a full document reload to force the header layout to re-evaluate the session
+          window.location.assign(window.location.href);
         });
       } catch (err: any) {
         console.error(err);
