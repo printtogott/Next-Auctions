@@ -3,19 +3,43 @@ export const runtime = "edge";
 import { NextResponse } from "next/server";
 import { auctions } from "@/core/instances/auctions";
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createBrowserClient } from "@supabase/supabase-js";
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient();
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    let user = null;
 
-    if (userError || !user) {
-      return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+    // 1. Try default server cookie client first
+    const supabaseServer = await createClient();
+    const { data: serverUserData } = await supabaseServer.auth.getUser();
+    user = serverUserData?.user;
+
+    // 2. Fallback to Bearer Auth token from Request headers if server cookies are absent
+    if (!user) {
+      const authHeader = request.headers.get("Authorization");
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        const token = authHeader.split(" ")[1];
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+        
+        const tempClient = createBrowserClient(supabaseUrl, supabaseAnonKey, {
+          global: { headers: { Authorization: `Bearer ${token}` } },
+        });
+        const { data: tokenUserData } = await tempClient.auth.getUser(token);
+        user = tokenUserData?.user;
+      }
+    }
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "Only authenticated user allowed" },
+        { status: 401 }
+      );
     }
 
     const body = await request.json();
 
-    // Call the core auction service domain
+    // Call core auction service domain
     const auction = await auctions().create({
       ...body,
       ownerId: user.id,
@@ -25,6 +49,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, data: auction });
   } catch (err: any) {
     console.error("API auction creation error:", err);
-    return NextResponse.json({ success: false, message: err.message || "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: err.message || "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
