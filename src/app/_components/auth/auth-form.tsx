@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { LoginForm } from "./log-in-form";
+import { LogInForm } from "./log-in-form";
 import { SignUpForm } from "./sign-up-form";
 
 type Props = {
