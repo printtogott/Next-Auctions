@@ -1,7 +1,7 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { ComponentPropsWithoutRef, FC } from "react";
 import { NavigationMenuLink } from "@/components/ui/navigation-menu";
 import {
@@ -12,10 +12,10 @@ import {
 import { cn } from "@/lib/utils";
 
 const linkClassName =
-  "group text-sm h-12 leading-none font-medium flex flex-row items-center gap-x-2";
+  "group text-sm h-12 leading-none font-medium flex flex-row items-center gap-x-2 w-full cursor-pointer px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors";
 
 const iconClassName =
-  "opacity-50 group-hover:opacity-100 group-hover:font-extrabold transition-all duration-200";
+  "opacity-70 group-hover:opacity-100 transition-opacity duration-200";
 
 type BaseProps = ComponentPropsWithoutRef<"li"> & {
   title: string;
@@ -31,17 +31,28 @@ type DisabledItemProps = {
 };
 
 type ListItemProps = BaseProps & LinkItemProps;
+
 export const NavListItem: FC<ListItemProps> = (props) => {
-  const { title, icon, href, ...rest } = props;
+  const { title, icon, href, className, ...rest } = props;
   const Icon = icon;
+  const router = useRouter();
+
+  const handleNavigation = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push(href);
+  };
 
   return (
-    <li {...rest}>
+    <li {...rest} className={cn("w-full", className)}>
       <NavigationMenuLink asChild>
-        <Link href={href} className={cn(linkClassName, "min-w-full")}>
+        <a
+          href={href}
+          onClick={handleNavigation}
+          className={cn(linkClassName, "min-w-full")}
+        >
           {Icon && <Icon size={16} className={iconClassName} />}
-          {title}
-        </Link>
+          <span>{title}</span>
+        </a>
       </NavigationMenuLink>
     </li>
   );
@@ -49,32 +60,23 @@ export const NavListItem: FC<ListItemProps> = (props) => {
 
 type DisabledNavListItemProps = BaseProps & DisabledItemProps;
 export const DisabledNavListItem: FC<DisabledNavListItemProps> = (props) => {
-  const { title, icon, disabledLabel, ...rest } = props;
-
+  const { title, icon, disabledLabel, className, ...rest } = props;
   const Icon = icon;
 
   return (
-    <li {...rest}>
+    <li {...rest} className={cn("w-full", className)}>
       <NavigationMenuLink asChild>
         <Tooltip>
           <TooltipTrigger asChild>
             <span
               className={cn(
                 linkClassName,
-                "inline-flex p-2 text-muted-foreground cursor-not-allowed",
+                "inline-flex text-muted-foreground cursor-not-allowed opacity-50",
               )}
               aria-disabled={true}
             >
-              {Icon && (
-                <Icon
-                  size={16}
-                  className={cn(
-                    iconClassName,
-                    "group-hover:opacity-50 text-muted-foreground",
-                  )}
-                />
-              )}
-              {title}
+              {Icon && <Icon size={16} className={iconClassName} />}
+              <span>{title}</span>
             </span>
           </TooltipTrigger>
           <TooltipContent>{disabledLabel}</TooltipContent>
