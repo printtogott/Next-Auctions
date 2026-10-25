@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState, type FC } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,9 +10,14 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { AuthButton } from "../auth/auth-button";
 import { AuctionsMenu } from "./auctions-menu/auctions-menu";
-import { NotificationsMenu } from "./notifications-menu/notifications-menu";
 import { SettingsMenu } from "./settings-menu/settings-menu";
 import { UserMenu } from "./user-menu/user-menu";
+
+// Dynamically import NotificationsMenu with SSR disabled to isolate server component dependencies
+const NotificationsMenu = dynamic(
+  () => import("./notifications-menu/notifications-menu").then((mod) => mod.NotificationsMenu),
+  { ssr: false }
+);
 
 export const NavLinks: FC = () => {
   const [user, setUser] = useState<any>(null);
