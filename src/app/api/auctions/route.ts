@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   try {
     let user = null;
 
-    // Extract Bearer Token from Authorization header
+    // 1. Extract Bearer Token from Authorization header
     const authHeader = request.headers.get("Authorization");
     if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.split(" ")[1];
@@ -17,9 +17,14 @@ export async function POST(request: Request) {
       
       const tempClient = createBrowserClient(supabaseUrl, supabaseAnonKey, {
         auth: { persistSession: false, autoRefreshToken: false },
+        global: {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       });
       
-      const { data: userData, error: userError } = await tempClient.auth.getUser(token);
+      const { data: userData, error: userError } = await tempClient.auth.getUser();
       if (!userError && userData?.user) {
         user = userData.user;
       }
@@ -34,7 +39,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    // Call the core domain service which safely handles foreign keys & user profile mapping
+    // 2. Execute creation via domain service
     const auction = await auctions().create({
       ...body,
       ownerId: user.id,
