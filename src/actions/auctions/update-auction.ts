@@ -11,6 +11,7 @@ export const updateAuction = async (
     const auction = await auctions().update(params);
     return { success: true, data: auction };
   } catch (err) {
+    console.error("updateAuction server action error:", err);
     return {
       success: false,
       message: (err as Error).message ?? "Unknown error",
