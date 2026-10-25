@@ -16,7 +16,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import type { z } from "zod";
-import { createClient } from "@/utils/supabase/client";
 import { SliderInput } from "@/app/_components/auctions/slider-input";
 import { DayPicker } from "@/app/_components/date-picker";
 import { UppyMultiUploader } from "@/app/_components/uppy/uppy-multi-uploader";
@@ -40,6 +39,7 @@ import {
   type CreateAuctionParams,
   CreateAuctionParamsSchema,
 } from "@/core/domains/auction";
+import { createClient } from "@/utils/supabase/client";
 import { SelectFor } from "../../../../../_components/select-for";
 import {
   CATEGORY_OPTIONS,
@@ -90,29 +90,34 @@ export const CreateAuctionForm: FC = () => {
     async (values: FormSchema) => {
       try {
         const supabase = createClient();
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-        if (!session?.access_token) {
+        if (userError || !user) {
           throw new Error("You must be logged in to create an auction.");
         }
 
-        const response = await fetch("/api/auctions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify(values),
-        });
+        const { data, error } = await supabase
+          .from("auctions")
+          .insert({
+            title: values.title,
+            description: values.description,
+            starting_price: values.startingPrice,
+            category: values.category,
+            status: values.status,
+            end_at: values.endAt ? new Date(values.endAt).toISOString() : null,
+            owner_id: user.id,
+            storage_id: values.storageId,
+            images: values.images || [],
+          })
+          .select()
+          .single();
 
-        const result = await response.json();
-
-        if (!response.ok || !result.success) {
-          throw new Error(result.message || "Failed to create auction");
+        if (error || !data) {
+          throw new Error(error?.message || "Failed to create auction");
         }
 
         toast.success(t`You successfully created your auction!`);
-        router.push(`/${lang}/auctions/${result.data.id}`);
+        router.push(`/${lang}/auctions/${data.id}`);
       } catch (err: any) {
         console.error(err);
         toast.error(err.message || t`Something went wrong, please try again later.`);
@@ -260,7 +265,8 @@ export const CreateAuctionForm: FC = () => {
                 </FormLabel>
                 <FormControl>
                   <DayPicker
-                    {...field}
+                    value={field.value}
+                    onChange={field.onChange}
                     disabledBefore={TOMORROW}
                     className="@sm:max-w-1/2 @max-sm:w-full"
                   />
