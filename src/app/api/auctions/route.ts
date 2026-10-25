@@ -42,10 +42,19 @@ export async function POST(request: Request) {
     user = userData.user;
     const body = await request.json();
 
-    // 3. Use Service Role Client to insert into Supabase DB directly on Edge
-    // This bypasses cookie issues on Cloudflare Pages while preserving security (user ID verified above)
     const adminClient = createWithServiceRoleSupabaseClient();
 
+    // 3. Ensure public user profile exists to satisfy foreign key constraint (auctions_owner_id_fkey)
+    await adminClient
+      .from("users") // or users_public depending on your schema; upsert prevents duplicates
+      .upsert({
+        id: user.id,
+        email: user.email,
+        first_name: user.user_metadata?.first_name || user.email?.split("@")[0] || "User",
+        last_name: user.user_metadata?.last_name || "",
+      }, { onConflict: "id", ignoreDuplicates: true });
+
+    // 4. Insert auction record
     const { data: auction, error: dbError } = await adminClient
       .from("auctions")
       .insert({
