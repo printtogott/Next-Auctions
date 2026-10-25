@@ -9,24 +9,24 @@ export async function POST(request: Request) {
   try {
     let user = null;
 
-    // 1. Try Bearer Auth token from Request headers first
+    // 1. Extract and validate Bearer Token from Authorization header
     const authHeader = request.headers.get("Authorization");
     if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.split(" ")[1];
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
       
-      const tempClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
-      const { data: sessionData, error: sessionError } = await tempClient.auth.setSession({
-        access_token: token,
-        refresh_token: "",
+      const tempClient = createBrowserClient(supabaseUrl, supabaseAnonKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
       });
-      if (!sessionError && sessionData?.user) {
-        user = sessionData.user;
+      
+      const { data: userData, error: userError } = await tempClient.auth.getUser(token);
+      if (!userError && userData?.user) {
+        user = userData.user;
       }
     }
 
-    // 2. Fallback to default server cookie client
+    // 2. Fallback to server cookies client
     if (!user) {
       const supabaseServer = await createClient();
       const { data: serverUserData } = await supabaseServer.auth.getUser();
