@@ -2,14 +2,13 @@ export const runtime = "edge";
 
 import { NextResponse } from "next/server";
 import { auctions } from "@/core/instances/auctions";
-import { createClient } from "@/utils/supabase/server";
 import { createClient as createBrowserClient } from "@supabase/supabase-js";
 
 export async function POST(request: Request) {
   try {
     let user = null;
 
-    // 1. Extract and validate Bearer Token from Authorization header
+    // Extract Bearer Token from Authorization header
     const authHeader = request.headers.get("Authorization");
     if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.split(" ")[1];
@@ -26,13 +25,6 @@ export async function POST(request: Request) {
       }
     }
 
-    // 2. Fallback to server cookies client
-    if (!user) {
-      const supabaseServer = await createClient();
-      const { data: serverUserData } = await supabaseServer.auth.getUser();
-      user = serverUserData?.user;
-    }
-
     if (!user) {
       return NextResponse.json(
         { success: false, message: "Only authenticated user allowed" },
@@ -42,7 +34,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    // Call core auction service domain
+    // Call the core domain service which safely handles foreign keys & user profile mapping
     const auction = await auctions().create({
       ...body,
       ownerId: user.id,

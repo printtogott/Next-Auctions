@@ -90,34 +90,29 @@ export const CreateAuctionForm: FC = () => {
     async (values: FormSchema) => {
       try {
         const supabase = createClient();
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        const { data: { session } } = await supabase.auth.getSession();
 
-        if (userError || !user) {
+        if (!session?.access_token) {
           throw new Error("You must be logged in to create an auction.");
         }
 
-        const { data, error } = await supabase
-          .from("auctions")
-          .insert({
-            title: values.title,
-            description: values.description,
-            starting_price: values.startingPrice,
-            category: values.category,
-            status: values.status,
-            end_at: values.endAt ? new Date(values.endAt).toISOString() : null,
-            owner_id: user.id,
-            storage_id: values.storageId,
-            images: values.images || [],
-          })
-          .select()
-          .single();
+        const response = await fetch("/api/auctions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify(values),
+        });
 
-        if (error || !data) {
-          throw new Error(error?.message || "Failed to create auction");
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Failed to create auction");
         }
 
         toast.success(t`You successfully created your auction!`);
-        router.push(`/${lang}/auctions/${data.id}`);
+        router.push(`/${lang}/auctions/${result.data.id}`);
       } catch (err: any) {
         console.error(err);
         toast.error(err.message || t`Something went wrong, please try again later.`);
