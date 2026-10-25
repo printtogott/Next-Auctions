@@ -6,8 +6,8 @@ import { ArrowRightFromLineIcon } from "lucide-react";
 import { type FC, startTransition, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { z } from "zod";
-import { login } from "@/actions/auth/log-in";
+import { z } from "zod";
+import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,18 +18,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { LoginParamsSchema } from "@/core/domains/user";
 
-const formSchema = LoginParamsSchema;
+const formSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1, "Password is required"),
+});
+
 type FormSchema = z.infer<typeof formSchema>;
 
 type Props = {
-  onCloseSideSheet: () => void;
+  onCloseSideSheet?: () => void;
 };
 
-export const LoginForm: FC<Props> = (props) => {
+export const LogInForm: FC<Props> = (props) => {
   const { onCloseSideSheet } = props;
-
   const { t } = useLingui();
 
   const form = useForm<FormSchema>({
@@ -45,20 +47,24 @@ export const LoginForm: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (values: FormSchema) => {
       try {
-        const result = await login(values);
-
-        startTransition(() => {
-          onCloseSideSheet();
+        const supabase = createClient();
+        
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: values.email,
+          password: values.password,
         });
 
-        if (result.success) {
-          toast.success(t`You successfully signed in!`);
-        } else {
-          throw new Error(result.message);
-        }
-      } catch (err) {
+        if (error) throw error;
+
+        toast.success(t`Successfully signed in!`);
+
+        startTransition(() => {
+          if (onCloseSideSheet) onCloseSideSheet();
+          window.location.reload();
+        });
+      } catch (err: any) {
         console.error(err);
-        toast.error(t`Something went wrong, please try again later.`);
+        toast.error(err.message || t`Something went wrong, please try again later.`);
       }
     },
     [t, onCloseSideSheet],
@@ -72,15 +78,9 @@ export const LoginForm: FC<Props> = (props) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <Trans>Email</Trans>
-              </FormLabel>
+              <FormLabel><Trans>Email</Trans></FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  placeholder="jane.doe@gmail.com"
-                  {...field}
-                />
+                <Input type="email" placeholder="jane.doe@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -92,9 +92,7 @@ export const LoginForm: FC<Props> = (props) => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <Trans>Password</Trans>
-              </FormLabel>
+              <FormLabel><Trans>Password</Trans></FormLabel>
               <FormControl>
                 <Input type="password" placeholder="******" {...field} />
               </FormControl>
@@ -109,11 +107,11 @@ export const LoginForm: FC<Props> = (props) => {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <Trans>Logging in...</Trans>
+            <Trans>Signing in...</Trans>
           ) : (
             <span className="inline-flex gap-x-2 items-center">
-              <ArrowRightFromLineIcon size={8} />
-              <Trans>Login</Trans>
+              <ArrowRightFromLineIcon size={16} />
+              <Trans>Sign in</Trans>
             </span>
           )}
         </Button>
