@@ -89,37 +89,22 @@ export const CreateAuctionForm: FC = () => {
   const onSubmit = useCallback(
     async (values: FormSchema) => {
       try {
-        const supabase = createClient();
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        const response = await fetch("/api/auctions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
 
-        if (userError || !user) {
-          throw new Error("You must be logged in to create an auction.");
-        }
+        const result = await response.json();
 
-        const auctionData = {
-          title: values.title,
-          description: values.description,
-          starting_price: values.startingPrice,
-          category: values.category,
-          status: values.status,
-          end_at: values.endAt ? new Date(values.endAt).toISOString() : null,
-          user_id: user.id,
-          storage_id: values.storageId,
-          images: values.images || [],
-        };
-
-        const { data, error } = await supabase
-          .from("auctions")
-          .insert(auctionData)
-          .select()
-          .single();
-
-        if (error) {
-          throw error;
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Failed to create auction");
         }
 
         toast.success(t`You successfully created your auction!`);
-        router.push(`/${lang}/auctions/${data.id}`);
+        router.push(`/${lang}/auctions/${result.data.id}`);
       } catch (err: any) {
         console.error(err);
         toast.error(err.message || t`Something went wrong, please try again later.`);
