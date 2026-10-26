@@ -1,4 +1,5 @@
 export const runtime = "edge";
+
 import { NextResponse } from "next/server";
 import { auctions } from "@/core/instances/auctions";
 import { UpdateAuctionParamsSchema } from "@/core/domains/auction";
@@ -10,6 +11,11 @@ export async function PUT(
   try {
     const { id } = await params;
     const json = await request.json();
+    
+    // Convert endAt string to a Date object if provided
+    if (json.endAt) {
+      json.endAt = new Date(json.endAt);
+    }
     
     const parsedParams = UpdateAuctionParamsSchema.parse({
       ...json,
