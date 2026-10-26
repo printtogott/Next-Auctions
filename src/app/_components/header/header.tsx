@@ -24,7 +24,7 @@ const Logo: FC = () => {
   return (
     <Link href={`/${lang}/`} className="flex flex-col">
       <span className="font-extrabold text-2xl sm:text-3xl tracking-widest">
-        GavL
+        bids.tt
       </span>
       <TypographyLead className="max-sm:hidden text-xs md:text-base mt-1">
         <Trans>Track Auctions. Effortlessly</Trans>
