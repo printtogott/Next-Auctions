@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { NextResponse } from "next/server";
 import { auctions } from "@/core/instances/auctions";
 import { UpdateAuctionParamsSchema } from "@/core/domains/auction";
