@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 export function Hero() {
   return (
     <section 
-      className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mt-6 min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950"
+      className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mt-8 sm:-mt-12 md:-mt-16 min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950"
     >
-      {/* Edge-to-edge background image covering full viewport width */}
+      {/* Edge-to-edge background image */}
       <div 
         className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-all duration-300"
         style={{ 
@@ -15,15 +15,15 @@ export function Hero() {
         }}
       />
 
-      {/* Lightened overlay to make the wooden gavel & sound block details clearly visible */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-zinc-950/80" />
+      {/* Lighter overlay to make the gavel and block clearly visible */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-zinc-950/70" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-lg">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-xl">
           <Trans>Discover, Bid & Win Unique Auctions</Trans>
         </h1>
-        <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8 drop-shadow-md font-medium">
+        <p className="text-base sm:text-lg md:text-xl text-gray-100 max-w-2xl mx-auto mb-8 drop-shadow-lg font-medium">
           <Trans>
             Join our community-driven platform to find exclusive deals and one-of-a-kind items.
           </Trans>
@@ -34,7 +34,7 @@ export function Hero() {
               <Trans>Browse Auctions</Trans>
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="rounded-xl border-white/30 bg-black/40 text-white hover:bg-black/60 font-semibold backdrop-blur-md">
+          <Button asChild variant="outline" size="lg" className="rounded-xl border-white/40 bg-black/40 text-white hover:bg-black/60 font-semibold backdrop-blur-md">
             <Link href="/auctions/create">
               <Trans>Create Auction</Trans>
             </Link>
