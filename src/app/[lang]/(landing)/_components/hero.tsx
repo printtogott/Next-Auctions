@@ -4,36 +4,37 @@ import { Button } from "@/components/ui/button";
 
 export function Hero() {
   return (
-    <section className="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden bg-zinc-950">
-      {/* Background Image Container with responsive sizing */}
+    <section 
+      className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mt-6 min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950"
+    >
+      {/* Edge-to-edge background image covering full viewport width */}
       <div 
-        className="absolute inset-0 w-full h-full bg-no-repeat bg-center bg-contain md:bg-cover transition-all duration-300"
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-all duration-300"
         style={{ 
           backgroundImage: `url('/hero-gavel.jpg')`,
-          backgroundPosition: 'center center',
         }}
       />
 
-      {/* Balanced dark overlay to preserve wood detail */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/80 via-zinc-950/65 to-zinc-950/90" />
+      {/* Lightened overlay to make the wooden gavel & sound block details clearly visible */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-zinc-950/80" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-md">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-lg">
           <Trans>Discover, Bid & Win Unique Auctions</Trans>
         </h1>
-        <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8 drop-shadow">
+        <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8 drop-shadow-md font-medium">
           <Trans>
             Join our community-driven platform to find exclusive deals and one-of-a-kind items.
           </Trans>
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Button asChild size="lg" className="rounded-xl font-semibold shadow-lg">
+          <Button asChild size="lg" className="rounded-xl font-semibold shadow-xl">
             <Link href="/auctions">
               <Trans>Browse Auctions</Trans>
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="rounded-xl border-white/30 bg-black/50 text-white hover:bg-black/70 font-semibold backdrop-blur-sm">
+          <Button asChild variant="outline" size="lg" className="rounded-xl border-white/30 bg-black/40 text-white hover:bg-black/60 font-semibold backdrop-blur-md">
             <Link href="/auctions/create">
               <Trans>Create Auction</Trans>
             </Link>
