@@ -24,8 +24,11 @@ export const LogOutButton: FC<Props> = (props) => {
 
       if (result.success) {
         toast.success(t`You logged out successfully`);
+        // Refresh the Server Components / Layout state & redirect home
         router.push("/");
         router.refresh();
+        // Force window location reload to instantly clear header user context
+        window.location.href = "/";
       } else {
         throw new Error(result.message);
       }
