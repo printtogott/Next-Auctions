@@ -4,7 +4,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { ArrowRightIcon } from "lucide-react";
 import { type ComponentProps, type FC, useCallback } from "react";
 import { toast } from "sonner";
-import { logout } from "@/actions/auth/log-out";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -12,23 +12,28 @@ type Props = ComponentProps<typeof Button>;
 
 export const LogOutButton: FC<Props> = (props) => {
   const { className, ...rest } = props;
-
   const { t } = useLingui();
+  const router = useRouter();
 
   const handleLogOut = useCallback(async () => {
     try {
-      const result = await logout();
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+      const result = await response.json();
 
       if (result.success) {
         toast.success(t`You logged out successfully`);
+        router.push("/");
+        router.refresh();
       } else {
         throw new Error(result.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(t`Something went wrong, please try again later.`);
     }
-  }, [t]);
+  }, [t, router]);
 
   return (
     <Button
