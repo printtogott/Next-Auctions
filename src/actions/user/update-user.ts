@@ -11,6 +11,7 @@ export const updateUser = async (
     const user = await users().update(params);
     return { success: true, data: user };
   } catch (err) {
+    console.error("DETAILED SERVER ACTION UPDATE ERROR:", err);
     return {
       success: false,
       message: (err as Error).message ?? "Unknown error",
