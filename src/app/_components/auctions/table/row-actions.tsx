@@ -63,7 +63,7 @@ export const RowAction: FC<Props> = (props) => {
           </Button>
         </DropdownMenuItem>
 
-        {!isMyAuction && isOpenedAuction && (
+        {Boolean(meId) && !isMyAuction && isOpenedAuction && (
           <DropdownMenuItem asChild>
             <BidDialog
               auction={auction}
