@@ -90,7 +90,7 @@ export const UpdateProfileForm: FC<Props> = (props) => {
                 <Trans>First name *</Trans>
               </FormLabel>
               <FormControl>
-                <Input placeholder="John" disabled readOnly {...field} />
+                <Input placeholder="John" readOnly {...field} />
               </FormControl>
               <FormDescription>
                 <Trans>This is your public first name.</Trans>
@@ -109,7 +109,7 @@ export const UpdateProfileForm: FC<Props> = (props) => {
                 <Trans>Last Name *</Trans>
               </FormLabel>
               <FormControl>
-                <Input placeholder="Doe" disabled readOnly {...field} />
+                <Input placeholder="Doe" readOnly {...field} />
               </FormControl>
               <FormDescription>
                 <Trans>This is your public last name.</Trans>
