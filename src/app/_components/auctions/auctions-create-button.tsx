@@ -21,15 +21,18 @@ export const AuctionsCreateButton: FC<Props> = (props) => {
   if (disabled) {
     return (
       <>
-        <DisabledBtn {...rest} className="sm:hidden" />
+        {/* Mobile View */}
+        <div className="sm:hidden cursor-not-allowed inline-block">
+          <DisabledBtn {...rest} />
+        </div>
 
+        {/* Desktop View with Tooltip */}
         <span className="max-sm:hidden cursor-not-allowed inline-block">
           <Tooltip>
             <TooltipTrigger asChild>
-              {/* Wrapping in a span is required for tooltips on disabled elements */}
-              <span className="cursor-not-allowed inline-block">
+              <div className="cursor-not-allowed inline-block">
                 <DisabledBtn {...rest} />
-              </span>
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <Trans>Please log in to create auctions.</Trans>
@@ -56,9 +59,14 @@ const DisabledBtn: FC<Props> = (props) => {
     <Button
       {...rest}
       type="button"
-      disabled={true}
+      // We use pointer-events-auto on a wrapper/button with aria-disabled so the hover works and cursor shows correctly
+      aria-disabled={true}
       variant="outline"
-      className={cn(className, "text-muted-foreground cursor-not-allowed pointer-events-auto")}
+      className={cn(
+        className,
+        "text-muted-foreground !cursor-not-allowed pointer-events-auto opacity-70"
+      )}
+      onClick={(e) => e.preventDefault()}
     >
       <Trans>Create Auction</Trans>
     </Button>
