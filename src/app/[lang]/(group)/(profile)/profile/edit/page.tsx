@@ -1,4 +1,4 @@
-export const runtime = "edge";
+// export const runtime = "edge";
 
 import { Trans } from "@lingui/react/macro";
 import { redirect } from "next/navigation";
@@ -45,7 +45,7 @@ const Page: FC<Props> = async (props) => {
           </CardTitle>
           <CardDescription>
             <TypographyLead>
-              <Trans>Fill the form below to update your profile</Trans>
+              <Trans>Youre are only allow to change your profile picture</Trans>
             </TypographyLead>
           </CardDescription>
         </CardHeader>
