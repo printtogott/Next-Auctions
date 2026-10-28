@@ -45,7 +45,7 @@ const Page: FC<Props> = async (props) => {
           </CardTitle>
           <CardDescription>
             <TypographyLead>
-              <Trans>Youre are only allow to change your profile picture</Trans>
+              <Trans>You are only allowed to change your profile picture</Trans>
             </TypographyLead>
           </CardDescription>
         </CardHeader>

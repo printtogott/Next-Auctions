@@ -35,7 +35,7 @@ export function Hero() {
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="rounded-xl border-white/40 bg-black/40 text-white hover:bg-black/60 font-semibold backdrop-blur-md">
-            <Link href="/auctions/create">
+            <Link href="/auctions/new">
               <Trans>Create Auction</Trans>
             </Link>
           </Button>
