@@ -22,15 +22,15 @@ export const AuctionsCreateButton: FC<Props> = (props) => {
     return (
       <>
         {/* Mobile View */}
-        <div className="sm:hidden cursor-not-allowed inline-block">
+        <div className="sm:hidden" style={{ cursor: "not-allowed" }}>
           <DisabledBtn {...rest} />
         </div>
 
         {/* Desktop View with Tooltip */}
-        <span className="max-sm:hidden cursor-not-allowed inline-block">
+        <span className="max-sm:hidden" style={{ cursor: "not-allowed" }}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="cursor-not-allowed inline-block">
+              <div style={{ cursor: "not-allowed", display: "inline-block" }}>
                 <DisabledBtn {...rest} />
               </div>
             </TooltipTrigger>
@@ -59,14 +59,17 @@ const DisabledBtn: FC<Props> = (props) => {
     <Button
       {...rest}
       type="button"
-      // We use pointer-events-auto on a wrapper/button with aria-disabled so the hover works and cursor shows correctly
-      aria-disabled={true}
       variant="outline"
+      aria-disabled={true}
+      style={{ cursor: "not-allowed" }}
       className={cn(
         className,
-        "text-muted-foreground !cursor-not-allowed pointer-events-auto opacity-70"
+        "text-muted-foreground opacity-70 pointer-events-auto"
       )}
-      onClick={(e) => e.preventDefault()}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     >
       <Trans>Create Auction</Trans>
     </Button>
