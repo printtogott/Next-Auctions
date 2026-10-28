@@ -23,10 +23,13 @@ export const AuctionsCreateButton: FC<Props> = (props) => {
       <>
         <DisabledBtn {...rest} className="sm:hidden" />
 
-        <span className="max-sm:hidden">
+        <span className="max-sm:hidden cursor-not-allowed inline-block">
           <Tooltip>
             <TooltipTrigger asChild>
-              <DisabledBtn {...rest} />
+              {/* Wrapping in a span is required for tooltips on disabled elements */}
+              <span className="cursor-not-allowed inline-block">
+                <DisabledBtn {...rest} />
+              </span>
             </TooltipTrigger>
             <TooltipContent>
               <Trans>Please log in to create auctions.</Trans>
@@ -53,9 +56,9 @@ const DisabledBtn: FC<Props> = (props) => {
     <Button
       {...rest}
       type="button"
+      disabled={true}
       variant="outline"
-      className={cn(className, "text-muted-foreground cursor-not-allowed")}
-      aria-disabled={true}
+      className={cn(className, "text-muted-foreground cursor-not-allowed pointer-events-auto")}
     >
       <Trans>Create Auction</Trans>
     </Button>
