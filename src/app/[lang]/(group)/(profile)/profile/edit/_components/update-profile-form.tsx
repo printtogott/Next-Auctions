@@ -8,7 +8,6 @@ import { type FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { updateUser } from "@/actions/user/update-user";
 import { UppyAvatarUploader } from "@/app/_components/uppy/uppy-avatar-uploader";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,13 +60,20 @@ export const UpdateProfileForm: FC<Props> = (props) => {
   const onSubmit = useCallback(
     async (values: FormSchema) => {
       try {
-        const result = await updateUser(values);
+        const response = await fetch("/api/user/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
 
-        if (result.success) {
+        const result = await response.json();
+
+        if (response.ok && result.success) {
           toast.success(t`You successfully updated your profile!`);
           router.push(`/${lang}/profile`);
+          router.refresh();
         } else {
-          throw new Error(result.message);
+          throw new Error(result.message || "Failed to update profile");
         }
       } catch (err) {
         console.error(err);
