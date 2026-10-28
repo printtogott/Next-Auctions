@@ -3,7 +3,7 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { CoinsIcon, EyeIcon, MoreVerticalIcon } from "lucide-react";
 import Link from "next/link";
-import { type FC, useCallback, useEffect, useMemo, useState } from "react";
+import { type FC, useCallback, useEffect, useState } from "react";
 import { BidDialog } from "@/app/_components/bids/bid-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,16 +51,16 @@ export const RowAction: FC<Props> = (props) => {
     };
   }, [meIdProp]);
 
-  const isMyAuction = useMemo(() => {
-    return Boolean(currentMeId && currentMeId === auction.ownerId);
-  }, [currentMeId, auction]);
-
   const onClose = useCallback(() => {
     setIsOpen(false);
   }, []);
 
-  const isOpenedAuction = auction.status === AuctionStatusSchema.enum.OPEN;
+  // Strict check: User is authenticated, auction is open, and user is NOT the owner
   const isAuthenticated = Boolean(currentMeId);
+  const isOwner = Boolean(currentMeId && String(currentMeId) === String(auction.ownerId));
+  const isOpenedAuction = String(auction.status).toUpperCase() === AuctionStatusSchema.enum.OPEN;
+
+  const canBid = isAuthenticated && !isOwner && isOpenedAuction;
 
   return (
     <DropdownMenu open={open} onOpenChange={setIsOpen}>
@@ -89,7 +89,7 @@ export const RowAction: FC<Props> = (props) => {
           </Button>
         </DropdownMenuItem>
 
-        {isAuthenticated && !isMyAuction && isOpenedAuction && (
+        {canBid && (
           <DropdownMenuItem asChild>
             <BidDialog
               auction={auction}
