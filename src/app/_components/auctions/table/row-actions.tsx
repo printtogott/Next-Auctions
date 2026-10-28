@@ -3,7 +3,7 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { CoinsIcon, EyeIcon, MoreVerticalIcon } from "lucide-react";
 import Link from "next/link";
-import { type FC, useCallback, useMemo, useState } from "react";
+import { type FC, useCallback, useEffect, useMemo, useState } from "react";
 import { BidDialog } from "@/app/_components/bids/bid-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,28 +13,54 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { type Auction, AuctionStatusSchema } from "@/core/domains/auction";
+import { createClient } from "@/utils/supabase/client";
 
 type Props = {
   meId?: string;
   auction: Auction;
 };
+
 export const RowAction: FC<Props> = (props) => {
-  const { meId, auction } = props;
+  const { meId: meIdProp, auction } = props;
 
   const [open, setIsOpen] = useState<boolean>(false);
+  const [currentMeId, setCurrentMeId] = useState<string | undefined>(meIdProp);
 
   const { i18n } = useLingui();
   const { locale: lang } = i18n;
 
+  useEffect(() => {
+    if (meIdProp) {
+      setCurrentMeId(meIdProp);
+      return;
+    }
+
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user?.id) {
+        setCurrentMeId(user.id);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setCurrentMeId(session?.user?.id);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [meIdProp]);
+
   const isMyAuction = useMemo(() => {
-    return meId && meId === auction.ownerId;
-  }, [meId, auction]);
+    return Boolean(currentMeId && currentMeId === auction.ownerId);
+  }, [currentMeId, auction]);
 
   const onClose = useCallback(() => {
     setIsOpen(false);
   }, []);
 
   const isOpenedAuction = auction.status === AuctionStatusSchema.enum.OPEN;
+  const isAuthenticated = Boolean(currentMeId);
 
   return (
     <DropdownMenu open={open} onOpenChange={setIsOpen}>
@@ -63,7 +89,7 @@ export const RowAction: FC<Props> = (props) => {
           </Button>
         </DropdownMenuItem>
 
-        {Boolean(meId) && !isMyAuction && isOpenedAuction && (
+        {isAuthenticated && !isMyAuction && isOpenedAuction && (
           <DropdownMenuItem asChild>
             <BidDialog
               auction={auction}
