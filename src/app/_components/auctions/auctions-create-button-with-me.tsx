@@ -29,5 +29,5 @@ export const AuctionsCreateButtonWithMe: FC<Props> = (props) => {
     };
   }, []);
 
-  return <AuctionsCreateButton disabled={loading || !isAuthenticated} {...props} />;
+  return <AuctionsCreateButton disabled={loading} isAuthenticated={isAuthenticated} {...props} />;
 };

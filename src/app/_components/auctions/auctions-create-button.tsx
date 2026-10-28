@@ -4,60 +4,31 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import Link from "next/link";
 import type { ComponentProps, FC } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 
-type Props = ComponentProps<typeof Button>;
+type Props = ComponentProps<typeof Button> & {
+  isAuthenticated?: boolean;
+};
 
 export const AuctionsCreateButton: FC<Props> = (props) => {
-  const { disabled, ...rest } = props;
+  const { disabled, isAuthenticated, ...rest } = props;
   const { i18n } = useLingui();
   const { locale: lang } = i18n;
 
-  if (disabled) {
+  if (!isAuthenticated) {
     return (
-      <>
-        <DisabledBtn {...rest} className="sm:hidden" />
-
-        <span className="max-sm:hidden ">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DisabledBtn {...rest} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <Trans>Please log in to create auctions.</Trans>
-            </TooltipContent>
-          </Tooltip>
-        </span>
-      </>
+      <Button {...rest} asChild variant="outline">
+        <Link href={`/${lang}/login`}>
+          <Trans>Sign In to Create Auction</Trans>
+        </Link>
+      </Button>
     );
   }
 
   return (
-    <Button {...rest} asChild variant="outline">
+    <Button {...rest} asChild variant="default">
       <Link href={`/${lang}/auctions/new`}>
         <Trans>Create Auction</Trans>
       </Link>
-    </Button>
-  );
-};
-
-const DisabledBtn: FC<Props> = (props) => {
-  const { className, ...rest } = props;
-
-  return (
-    <Button
-      {...rest}
-      type="button"
-      variant="outline"
-      className={cn(className, "text-muted-foreground cursor-not-allowed")}
-      aria-disabled={true}
-    >
-      <Trans>Create Auction</Trans>
     </Button>
   );
 };
