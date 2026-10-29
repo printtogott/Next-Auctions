@@ -17,7 +17,7 @@ module.exports = {
     lineNumbers: false,
     origins: false,
   },
-  locales: ["en", "de", "fr", "pseudo"],
-  pseudoLocale: "pseudo",
+  locales: ["en", "es"],
+  
   sourceLocale: "en",
 };

@@ -18,8 +18,7 @@ import { cn } from "@/lib/utils";
 
 const LANGUAGES = {
   en: msg`English`,
-  de: msg`Deutsch`,
-  fr: msg`Français`,
+  es: msg`Español`,
 } as const;
 
 type Props = {

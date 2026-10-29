@@ -1,10 +1,5 @@
 import type { Locale } from "@lingui/core";
 
-enum Currency {
-  EUR = "EUR",
-  USD = "USD",
-}
-
 type Params = {
   value: number | null;
   locale: Locale;
@@ -15,13 +10,10 @@ export const formatCurrency = (params: Params) => {
 
   if (value == null) return null;
 
-  const currency =
-    locale === "fr" || locale === "de" ? Currency.EUR : Currency.USD;
-
   const formatted = new Intl.NumberFormat(locale, {
     style: "currency",
-    currency,
+    currency: "TTD",
   }).format(value);
 
-  return `${formatted} TT`;
+  return formatted;
 };
