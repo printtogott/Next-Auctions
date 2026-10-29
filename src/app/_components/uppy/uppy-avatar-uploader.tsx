@@ -1,25 +1,25 @@
-\"use client\";
+"use client";
 
-import { Dashboard } from \"@uppy/react\";
-import \"@uppy/core/css/style.min.css\";
-import \"@uppy/dashboard/css/style.min.css\";
-import \"@uppy/image-editor/css/style.min.css\";
-import { Trans, useLingui } from \"@lingui/react/macro\";
-import { CloudUploadIcon, SquareUserRoundIcon } from \"lucide-react\";
-import Image from \"next/image\";
-import { useEffect, useState } from \"react\";
-import { Controller, useFormContext } from \"react-hook-form\";
+import { Dashboard } from "@uppy/react";
+import "@uppy/core/css/style.min.css";
+import "@uppy/dashboard/css/style.min.css";
+import "@uppy/image-editor/css/style.min.css";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { CloudUploadIcon, SquareUserRoundIcon } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-} from \"@/components/ui/alert-dialog\";
-import { Card, CardContent, CardHeader } from \"@/components/ui/card\";
-import { Label } from \"@/components/ui/label\";
-import { useUppy } from \"./hooks/use-uppy\";
-import { LoaderType, useUppyLoader } from \"./hooks/use-uppy-loader\";
-import { SkeletonUppyDashboard } from \"./skeleton-uppy-dashboard\";
-import { UploadDialog } from \"./upload-dialog\";
+} from "@/components/ui/alert-dialog";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { useUppy } from "./hooks/use-uppy";
+import { LoaderType, useUppyLoader } from "./hooks/use-uppy-loader";
+import { SkeletonUppyDashboard } from "./skeleton-uppy-dashboard";
+import { UploadDialog } from "./upload-dialog";
 
 type Props = {
   userId: string;
@@ -33,8 +33,11 @@ export const UppyAvatarUploader = ({
   bucketName,
 }: Props) => {
   const [uppyIsReady, setUppyIsReady] = useState<boolean>(false);
+
   const { t } = useLingui();
+
   const { control, setValue } = useFormContext();
+
   const { uppy } = useUppy();
 
   const { openUploadDialog, setOpenUploadDialog, onStartUpload, onRemoveFile } =
@@ -45,13 +48,14 @@ export const UppyAvatarUploader = ({
       fieldName,
       setValue,
       bucketName,
-      successMessage: t\`Avatar uploaded successfully!\`,
-      infoMessage: t\`Click on Update your profile\`,
-      errorMessage: t\`Failed to upload avatar. Please try again.\`,
+      successMessage: t`Avatar uploaded successfully!`,
+      infoMessage: t`Click on Update your profile`,
+      errorMessage: t`Failed to upload avatar. Please try again.`,
     });
 
   useEffect(() => {
     if (!uppy) return;
+
     setUppyIsReady(true);
   }, [uppy]);
 
@@ -70,7 +74,7 @@ export const UppyAvatarUploader = ({
           </AlertDialogTitle>
           <AlertDialogDescription>
             <Trans>
-              Your image will be uploaded now, but it won't update your profile
+              Your image will be uploaded now, but it won&apos;t update your profile
               until you click “Update your profile”.
             </Trans>
           </AlertDialogDescription>
@@ -105,7 +109,7 @@ export const UppyAvatarUploader = ({
                   <Image
                     width={128}
                     height={128}
-                    src={\`\${field.value}?t=\${Date.now()}\`}
+                    src={`${field.value}?t=${Date.now()}`}
                     alt="Avatar preview"
                     className="w-44 h-44 rounded-lg object-cover mt-6"
                   />
