@@ -48,8 +48,8 @@ msgstr "Amount paid"
 msgid "An unexpected error occurred. You can try reloading this page."
 msgstr "An unexpected error occurred. You can try reloading this page."
 
-msgid "Art"
-msgstr "Art"
+#~ msgid "Art"
+#~ msgstr "Art"
 
 msgid "Ascending"
 msgstr "Ascending"
@@ -123,8 +123,8 @@ msgstr "Click on Update your profile"
 msgid "Closed"
 msgstr "Closed"
 
-msgid "Collectibles"
-msgstr "Collectibles"
+#~ msgid "Collectibles"
+#~ msgstr "Collectibles"
 
 msgid "Contact owner"
 msgstr "Contact owner"
@@ -171,8 +171,8 @@ msgstr "Description"
 msgid "Description *"
 msgstr "Description *"
 
-msgid "Deutsch"
-msgstr "Deutsch"
+#~ msgid "Deutsch"
+#~ msgstr "Deutsch"
 
 msgid "Discover, Bid & Win Unique Auctions"
 msgstr "Discover, Bid & Win Unique Auctions"
@@ -216,14 +216,17 @@ msgstr "English"
 msgid "Enter your email and password to login."
 msgstr "Enter your email and password to login."
 
+msgid "Español"
+msgstr "Español"
+
 msgid "Failed to upload avatar. Please try again."
 msgstr "Failed to upload avatar. Please try again."
 
 msgid "Failed to upload one or more images. Please try again."
 msgstr "Failed to upload one or more images. Please try again."
 
-msgid "Fashion"
-msgstr "Fashion"
+#~ msgid "Fashion"
+#~ msgstr "Fashion"
 
 msgid "Fill in your details to create a new account."
 msgstr "Fill in your details to create a new account."
@@ -234,8 +237,8 @@ msgstr "Fill the form below to create a new auction"
 msgid "Fill the form below to update your auction"
 msgstr "Fill the form below to update your auction"
 
-msgid "Fill the form below to update your profile"
-msgstr "Fill the form below to update your profile"
+#~ msgid "Fill the form below to update your profile"
+#~ msgstr "Fill the form below to update your profile"
 
 msgid "Filter auctions"
 msgstr "Filter auctions"
@@ -246,8 +249,8 @@ msgstr "First name"
 msgid "First name *"
 msgstr "First name *"
 
-msgid "Français"
-msgstr "Français"
+#~ msgid "Français"
+#~ msgstr "Français"
 
 msgid "Give a description to your auction"
 msgstr "Give a description to your auction"
@@ -300,14 +303,14 @@ msgstr "Log in to access more features."
 msgid "Log out"
 msgstr "Log out"
 
-msgid "Logging in..."
-msgstr "Logging in..."
+#~ msgid "Logging in..."
+#~ msgstr "Logging in..."
 
 msgid "Login"
 msgstr "Login"
 
-msgid "Music"
-msgstr "Music"
+#~ msgid "Music"
+#~ msgstr "Music"
 
 msgid "My auctions"
 msgstr "My auctions"
@@ -432,8 +435,14 @@ msgstr "Sending bid..."
 msgid "Set a date to end your auction"
 msgstr "Set a date to end your auction"
 
+msgid "Sign in"
+msgstr "Sign in"
+
 msgid "Sign up"
 msgstr "Sign up"
+
+msgid "Signing in..."
+msgstr "Signing in..."
 
 msgid "Signing up..."
 msgstr "Signing up..."
@@ -456,8 +465,8 @@ msgstr "Sort by"
 msgid "Sort order"
 msgstr "Sort order"
 
-msgid "Sports"
-msgstr "Sports"
+#~ msgid "Sports"
+#~ msgstr "Sports"
 
 msgid "Started"
 msgstr "Started"
@@ -470,6 +479,9 @@ msgstr "Starting Price *"
 
 msgid "Status"
 msgstr "Status"
+
+msgid "Successfully signed in!"
+msgstr "Successfully signed in!"
 
 msgid "Switch login/signup forms"
 msgstr "Switch login/signup forms"
@@ -531,8 +543,8 @@ msgstr "Total received"
 msgid "total users"
 msgstr "total users"
 
-msgid "Toys"
-msgstr "Toys"
+#~ msgid "Toys"
+#~ msgstr "Toys"
 
 msgid "Track Auctions. Effortlessly"
 msgstr "Track Auctions. Effortlessly"
@@ -600,11 +612,14 @@ msgstr "You successfully created your auction!"
 msgid "You successfully paid this auction."
 msgstr "You successfully paid this auction."
 
-msgid "You successfully signed in!"
-msgstr "You successfully signed in!"
+#~ msgid "You successfully signed in!"
+#~ msgstr "You successfully signed in!"
 
-msgid "You successfully signed up!"
-msgstr "You successfully signed up!"
+#~ msgid "You successfully signed up!"
+#~ msgstr "You successfully signed up!"
+
+msgid "You successfully signed up! Please check your email for verification."
+msgstr "You successfully signed up! Please check your email for verification."
 
 msgid "You successfully updated your auction!"
 msgstr "You successfully updated your auction!"
