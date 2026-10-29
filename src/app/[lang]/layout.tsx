@@ -47,7 +47,7 @@ const Layout: FC<PropsWithChildren<Props>> = async (props) => {
   const { params, children } = props;
   const { lang } = await params;
 
-  const i18n = getI18nInstance(lang); // get a ready-made i18n instance for the given locale
+  const i18n = await getI18nInstance(lang); // get a ready-made i18n instance for the given locale
   setI18n(i18n); // make it available server-side for the current request
 
   return (
