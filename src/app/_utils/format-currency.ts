@@ -18,8 +18,10 @@ export const formatCurrency = (params: Params) => {
   const currency =
     locale === "fr" || locale === "de" ? Currency.EUR : Currency.USD;
 
-  return new Intl.NumberFormat(locale, {
+  const formatted = new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
   }).format(value);
+
+  return `${formatted} TT`;
 };
