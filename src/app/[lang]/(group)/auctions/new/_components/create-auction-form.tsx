@@ -55,8 +55,8 @@ const DEFAULT_VALUES: CreateAuctionParams = {
   title: "",
   description: "",
   startingPrice: 100,
-  category: AuctionCategorySchema.enum.MUSIC,
-  endAt: undefined,
+  category: AuctionCategorySchema.enum.HOME,
+  endAt: new Date(Date.now() + 86400000),
   status: AuctionStatusSchema.enum.DRAFT,
   storageId: "",
   images: [],
@@ -256,7 +256,7 @@ export const CreateAuctionForm: FC = () => {
               <FormItem>
                 <FormLabel className="flex items-center gap-x-2">
                   <CalendarClockIcon className="size-5 text-muted-foreground" />
-                  <Trans>End at</Trans>
+                  <Trans>End at *</Trans>
                 </FormLabel>
                 <FormControl>
                   <DayPicker
