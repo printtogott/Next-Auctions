@@ -16,7 +16,7 @@ export const withI18n = <T extends I18nProps = I18nProps>(
 ): FC<T> => {
   return async function WithI18nBuild(props) {
     const { lang } = await props.params;
-    const i18n = getI18nInstance(lang);
+    const i18n = await getI18nInstance(lang);
     setI18n(i18n);
 
     return <Component {...props} />;
@@ -28,7 +28,7 @@ export const withI18nNotFound = (Component: FC): FC => {
     const store = await headers();
 
     const lang = store.get("x-language") ?? "fr";
-    const i18n = getI18nInstance(lang);
+    const i18n = await getI18nInstance(lang);
     setI18n(i18n);
 
     return <Component />;
