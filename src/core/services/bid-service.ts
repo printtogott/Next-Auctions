@@ -19,14 +19,12 @@ export class BidService {
   async create(params: CreateBidParams): Promise<Bid> {
     const me = await this.userRepo.me();
 
-    // RLS auth_users_can_insert_bids_on_open_auctions
     if (!me) {
       throw new Error("Only authenticated user allowed");
     }
 
     const auction = await this.auctionRepo.findById(params.auctionId);
 
-    // RLS auth_users_can_insert_bids_on_open_auctions
     if (
       !auction?.id ||
       auction.id !== params.auctionId ||
