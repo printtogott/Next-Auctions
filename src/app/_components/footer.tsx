@@ -18,7 +18,7 @@ export const Footer: FC = () => {
 
         <Link href={`/${lang}/`} scroll>
           <TypographyH6>
-            bids.tt | <Trans>Track Auctions. Effortlessly.</Trans>
+            ttbids | <Trans>Track Auctions. Effortlessly.</Trans>
           </TypographyH6>
         </Link>
       </div>

@@ -31,7 +31,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "bids.tt",
+  title: "ttbids",
   description: "Track Auctions Effortlessly",
 };
 
