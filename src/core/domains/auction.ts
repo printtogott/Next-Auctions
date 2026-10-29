@@ -3,15 +3,9 @@ import { UserSchema } from "./user";
 
 // enums
 export const AuctionCategorySchema = z.enum([
-  "ELECTRONICS",
-  "FASHION",
-  "COLLECTIBLES",
-  "ART",
-  "MUSIC",
-  "SPORTS",
   "HOME",
-  "TOYS",
   "AUTOMOTIVE",
+  "ELECTRONICS",
 ]);
 export type AuctionCategory = z.infer<typeof AuctionCategorySchema>;
 
@@ -38,7 +32,7 @@ export const AuctionSchema = z.object({
     .min(1, { message: "Starting price must be greater than 1" }),
   status: AuctionStatusSchema,
   startedAt: z.date().optional(),
-  endAt: z.date().optional(),
+  endAt: z.date(),
   paidAt: z.date().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -104,7 +98,7 @@ export const CreateAuctionStatusSchema = z.enum([
   AuctionStatusSchema.enum.OPEN,
 ]);
 export const CreateAuctionParamsSchema = BaseAuctionFields.extend({
-  endAt: AuctionSchema.shape.endAt.optional(),
+  endAt: AuctionSchema.shape.endAt,
   status: CreateAuctionStatusSchema,
 });
 export type CreateAuctionParams = z.infer<typeof CreateAuctionParamsSchema>;
@@ -112,7 +106,7 @@ export type CreateAuctionParams = z.infer<typeof CreateAuctionParamsSchema>;
 // update auction - FE params
 export const UpdateAuctionStatusSchema = AuctionStatusSchema;
 export const UpdateAuctionParamsSchema = BaseAuctionUpdateFields.extend({
-  endAt: AuctionSchema.shape.endAt.optional(),
+  endAt: AuctionSchema.shape.endAt,
   paidAt: AuctionSchema.shape.paidAt.optional(),
   status: UpdateAuctionStatusSchema,
 });
