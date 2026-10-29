@@ -256,7 +256,7 @@ export const CreateAuctionForm: FC = () => {
               <FormItem>
                 <FormLabel className="flex items-center gap-x-2">
                   <CalendarClockIcon className="size-5 text-muted-foreground" />
-                  <Trans>End at *</Trans>
+                  End at *
                 </FormLabel>
                 <FormControl>
                   <DayPicker
