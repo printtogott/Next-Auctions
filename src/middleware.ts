@@ -1,4 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { updateSession } from "../utils/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
@@ -8,11 +9,10 @@ export async function middleware(request: NextRequest) {
   const response = await updateSession(request);
 
   // 2. Redirect logic
-  // Skip if the path already starts with /en, /de, /fr or is an excluded path
+  // Skip if the path already starts with /en, /es or is an excluded path
   if (
     pathname.startsWith("/en") ||
-    pathname.startsWith("/de") ||
-    pathname.startsWith("/fr") ||
+    pathname.startsWith("/es") ||
     pathname.startsWith("/_next") ||
     pathname.includes(".")
   ) {
@@ -31,8 +31,7 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * _ api/
-     * Feel free to modify this pattern to include more paths.
+     * - api/
      */
     "/((?!_next/static|_next/image|favicon.ico|api/.*|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
