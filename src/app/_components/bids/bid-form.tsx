@@ -6,7 +6,6 @@ import { type FC, startTransition, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { createBid } from "@/actions/bids/create-bid";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -56,16 +55,23 @@ export const BidForm: FC<Props> = (props) => {
       try {
         toast.info(t`Sending bid...`);
 
-        const result = await createBid({ ...values, lang });
+        const res = await fetch("/api/bids", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...values, lang }),
+        });
+
+        const result = await res.json();
 
         if (result.success) {
           toast.success(t`Bid placed successfully!`);
+          window.location.reload();
         } else {
           throw new Error(result.message);
         }
       } catch (err) {
         console.error(err);
-        toast.error(t`Something went wrong, please try again later.`);
+        toast.error((err as Error).message || t`Something went wrong, please try again later.`);
       } finally {
         startTransition(() => {
           handleCloseCaller?.();
