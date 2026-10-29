@@ -39,9 +39,15 @@ export const I18nSwitcher: FC<Props> = (props) => {
   }, []);
 
   const onChange = useCallback(
-    (locale: string) => {
-      const pathNameWithoutLocale = pathname?.split("/")?.slice(2) ?? [];
-      const newPath = `/${locale}/${pathNameWithoutLocale.join("/")}`;
+    (newLocale: string) => {
+      const segments = pathname?.split("/") ?? [];
+      // segments[0] is empty string because pathname starts with /
+      if (segments.length > 1) {
+        segments[1] = newLocale;
+      } else {
+        segments.push(newLocale);
+      }
+      const newPath = segments.join("/") || `/${newLocale}`;
 
       router.push(newPath);
     },
