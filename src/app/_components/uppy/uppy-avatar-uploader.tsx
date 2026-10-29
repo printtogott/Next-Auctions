@@ -95,7 +95,7 @@ export const UppyAvatarUploader = ({
 
             {uppyIsReady ? (
               <CardContent className="flex flex-col items-center justify-center px-4">
-                <Dashboard
+                <div className="cursor-pointer"><Dashboard
                   uppy={uppy}
                   theme="dark"
                   height={128}
