@@ -57,7 +57,7 @@ const DEFAULT_VALUES: UpdateAuctionParams = {
   description: "",
   startingPrice: 10,
   category: AuctionCategorySchema.enum.HOME,
-  endAt: undefined,
+  endAt: new Date(Date.now() + 86400000),
   status: AuctionStatusSchema.enum.OPEN,
   storageId: undefined,
   images: [],
