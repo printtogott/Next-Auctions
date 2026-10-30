@@ -11,7 +11,7 @@ export async function POST() {
     console.error("API logout error:", err);
     return NextResponse.json(
       { success: false, message: (err as Error).message ?? "Unknown error" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

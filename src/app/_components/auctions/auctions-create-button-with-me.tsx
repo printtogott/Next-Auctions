@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ComponentProps, type FC } from "react";
+import { type ComponentProps, type FC, useEffect, useState } from "react";
 import type { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { AuctionsCreateButton } from "./auctions-create-button";
@@ -19,7 +19,9 @@ export const AuctionsCreateButtonWithMe: FC<Props> = (props) => {
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setIsAuthenticated(!!session?.user);
       setLoading(false);
     });
@@ -29,5 +31,7 @@ export const AuctionsCreateButtonWithMe: FC<Props> = (props) => {
     };
   }, []);
 
-  return <AuctionsCreateButton disabled={loading || !isAuthenticated} {...props} />;
+  return (
+    <AuctionsCreateButton disabled={loading || !isAuthenticated} {...props} />
+  );
 };

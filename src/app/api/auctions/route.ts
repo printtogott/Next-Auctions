@@ -1,7 +1,7 @@
 export const runtime = "edge";
 
-import { NextResponse } from "next/server";
 import { createClient as createBrowserClient } from "@supabase/supabase-js";
+import { NextResponse } from "next/server";
 import { createWithServiceRoleSupabaseClient } from "@/utils/supabase/with-service-role-client";
 
 export async function POST(request: Request) {
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json(
         { success: false, message: "Only authenticated user allowed" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -31,11 +31,12 @@ export async function POST(request: Request) {
       },
     });
 
-    const { data: userData, error: userError } = await tempClient.auth.getUser();
+    const { data: userData, error: userError } =
+      await tempClient.auth.getUser();
     if (userError || !userData?.user) {
       return NextResponse.json(
         { success: false, message: "Only authenticated user allowed" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -47,12 +48,18 @@ export async function POST(request: Request) {
     // 3. Ensure public user profile exists to satisfy foreign key constraint (auctions_owner_id_fkey)
     await adminClient
       .from("users") // or users_public depending on your schema; upsert prevents duplicates
-      .upsert({
-        id: user.id,
-        email: user.email,
-        first_name: user.user_metadata?.first_name || user.email?.split("@")[0] || "User",
-        last_name: user.user_metadata?.last_name || "",
-      }, { onConflict: "id", ignoreDuplicates: true });
+      .upsert(
+        {
+          id: user.id,
+          email: user.email,
+          first_name:
+            user.user_metadata?.first_name ||
+            user.email?.split("@")[0] ||
+            "User",
+          last_name: user.user_metadata?.last_name || "",
+        },
+        { onConflict: "id", ignoreDuplicates: true },
+      );
 
     // 4. Insert auction record
     const { data: auction, error: dbError } = await adminClient
@@ -75,7 +82,7 @@ export async function POST(request: Request) {
       console.error("Database insert error:", dbError);
       return NextResponse.json(
         { success: false, message: dbError.message },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -84,7 +91,7 @@ export async function POST(request: Request) {
     console.error("API auction creation error:", err);
     return NextResponse.json(
       { success: false, message: err.message || "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

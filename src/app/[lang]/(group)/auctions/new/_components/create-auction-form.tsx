@@ -90,7 +90,9 @@ export const CreateAuctionForm: FC = () => {
     async (values: FormSchema) => {
       try {
         const supabase = createClient();
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
         if (!session?.access_token) {
           throw new Error("You must be logged in to create an auction.");
@@ -100,7 +102,7 @@ export const CreateAuctionForm: FC = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${session.access_token}`,
+            Authorization: `Bearer ${session.access_token}`,
           },
           body: JSON.stringify(values),
         });
@@ -115,7 +117,9 @@ export const CreateAuctionForm: FC = () => {
         router.push(`/${lang}/auctions/${result.data.id}`);
       } catch (err: any) {
         console.error(err);
-        toast.error(err.message || t`Something went wrong, please try again later.`);
+        toast.error(
+          err.message || t`Something went wrong, please try again later.`,
+        );
       }
     },
     [t, lang, router],

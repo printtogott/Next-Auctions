@@ -64,7 +64,7 @@ const DisabledBtn: FC<Props> = (props) => {
       style={{ cursor: "not-allowed" }}
       className={cn(
         className,
-        "text-muted-foreground opacity-70 pointer-events-auto"
+        "text-muted-foreground opacity-70 pointer-events-auto",
       )}
       onClick={(e) => {
         e.preventDefault();

@@ -2,20 +2,18 @@
 
 import { Trans, useLingui } from "@lingui/react/macro";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { AuctionsCreateButtonWithMe } from "@/app/_components/auctions/auctions-create-button-with-me";
+import { Button } from "@/components/ui/button";
 
 export function Hero() {
   const { i18n } = useLingui();
   const { locale: lang } = i18n;
 
   return (
-    <section 
-      className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mt-8 sm:-mt-12 md:-mt-16 min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950"
-    >
-      <div 
+    <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mt-8 sm:-mt-12 md:-mt-16 min-h-[85vh] flex items-center justify-center overflow-hidden bg-zinc-950">
+      <div
         className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-all duration-300"
-        style={{ 
+        style={{
           backgroundImage: `url("/hero-gavel.jpg")`,
         }}
       />
@@ -28,17 +26,25 @@ export function Hero() {
         </h1>
         <p className="text-base sm:text-lg md:text-xl text-gray-100 max-w-2xl mx-auto mb-8 drop-shadow-lg font-medium">
           <Trans>
-            Join our community-driven platform to find exclusive deals and one-of-a-kind items.
+            Join our community-driven platform to find exclusive deals and
+            one-of-a-kind items.
           </Trans>
         </p>
         <div className="flex flex-wrap justify-center gap-4 items-center">
-          <Button asChild size="lg" className="rounded-xl font-semibold shadow-xl">
+          <Button
+            asChild
+            size="lg"
+            className="rounded-xl font-semibold shadow-xl"
+          >
             <Link href={`/${lang}/auctions`}>
               <Trans>Browse Auctions</Trans>
             </Link>
           </Button>
-          
-          <AuctionsCreateButtonWithMe size="lg" className="rounded-xl border-white/40 bg-black/40 text-white hover:bg-black/60 font-semibold backdrop-blur-md" />
+
+          <AuctionsCreateButtonWithMe
+            size="lg"
+            className="rounded-xl border-white/40 bg-black/40 text-white hover:bg-black/60 font-semibold backdrop-blur-md"
+          />
         </div>
       </div>
     </section>

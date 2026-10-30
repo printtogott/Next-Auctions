@@ -1,6 +1,7 @@
 export const runtime = "edge";
 
 import { Trans } from "@lingui/react/macro";
+import { redirect } from "next/navigation";
 import type { FC } from "react";
 import { TypographyH2 } from "@/app/_components/typography/h2";
 import { TypographyLead } from "@/app/_components/typography/lead";
@@ -12,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { type LangParam, withI18n } from "@/i18n";
+import { createClient } from "@/utils/supabase/server";
 import { CreateAuctionForm } from "./_components/create-auction-form";
 
 type Props = {
@@ -19,6 +21,24 @@ type Props = {
 };
 
 const Page: FC<Props> = async (props) => {
+  const { lang } = await props.params;
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect(`/${lang}/profile/edit`);
+  }
+
+  const verificationStatus =
+    user.user_metadata?.verificationStatus ?? "UNVERIFIED";
+
+  if (verificationStatus !== "VERIFIED") {
+    redirect(`/${lang}/profile/edit`);
+  }
+
   return (
     <div className="max-w-5xl flex flex-col gap-4 mx-auto pb-4">
       <Card>

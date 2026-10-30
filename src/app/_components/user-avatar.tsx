@@ -35,7 +35,10 @@ export const UserAvatar: FC<Props> = ({
   variant = "default",
   onlyAvatar = false,
 }) => {
-  const avatarUrl = user?.avatarUrl || user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+  const avatarUrl =
+    user?.avatarUrl ||
+    user?.user_metadata?.avatar_url ||
+    user?.user_metadata?.picture;
   const email = user?.email;
 
   return (
@@ -83,7 +86,11 @@ const getInitials = (user: any) => {
   if (user.firstName || user.lastName) {
     return `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase();
   }
-  const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email || "";
+  const name =
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    user.email ||
+    "";
   const parts = name.trim().split(/[s@_.-]+/);
   if (parts.length >= 2 && parts[0] && parts[1]) {
     return `${parts[0][0]}${parts[1][0]}`.toUpperCase();

@@ -7,7 +7,6 @@ import { type FC, startTransition, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createClient } from "@/utils/supabase/client";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -47,7 +47,7 @@ export const SignInForm: FC<Props> = ({ onCloseSideSheet }) => {
     async (values: FormSchema) => {
       try {
         const supabase = createClient();
-        
+
         const { error } = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
@@ -63,7 +63,9 @@ export const SignInForm: FC<Props> = ({ onCloseSideSheet }) => {
         });
       } catch (err: any) {
         console.error(err);
-        toast.error(err.message || t`Something went wrong, please try again later.`);
+        toast.error(
+          err.message || t`Something went wrong, please try again later.`,
+        );
       }
     },
     [t, onCloseSideSheet],
@@ -77,9 +79,15 @@ export const SignInForm: FC<Props> = ({ onCloseSideSheet }) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel><Trans>Email</Trans></FormLabel>
+              <FormLabel>
+                <Trans>Email</Trans>
+              </FormLabel>
               <FormControl>
-                <Input type="email" placeholder="jane.doe@gmail.com" {...field} />
+                <Input
+                  type="email"
+                  placeholder="jane.doe@gmail.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -91,7 +99,9 @@ export const SignInForm: FC<Props> = ({ onCloseSideSheet }) => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel><Trans>Password</Trans></FormLabel>
+              <FormLabel>
+                <Trans>Password</Trans>
+              </FormLabel>
               <FormControl>
                 <Input type="password" placeholder="******" {...field} />
               </FormControl>

@@ -1,7 +1,7 @@
 import type { Messages } from "@lingui/core";
+import { i18n } from "@lingui/core";
 import { messages as enMessages } from "./messages/en";
 import { messages as esMessages } from "./messages/es";
-import { i18n } from "@lingui/core";
 
 export const allMessages: Record<string, Messages> = {
   en: enMessages,

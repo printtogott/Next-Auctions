@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+export const runtime = "edge";
 
 import { NextResponse } from "next/server";
 import { users } from "@/core/instances/users";
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     console.error("API update error:", err);
     return NextResponse.json(
       { success: false, message: (err as Error).message ?? "Unknown error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

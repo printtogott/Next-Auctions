@@ -74,8 +74,8 @@ export const UppyAvatarUploader = ({
           </AlertDialogTitle>
           <AlertDialogDescription>
             <Trans>
-              Your image will be uploaded now, but it won&apos;t update your profile
-              until you click “Update your profile”.
+              Your image will be uploaded now, but it won&apos;t update your
+              profile until you click “Update your profile”.
             </Trans>
           </AlertDialogDescription>
         </AlertDialogHeader>

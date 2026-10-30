@@ -42,7 +42,9 @@ export const RowAction: FC<Props> = (props) => {
       }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setCurrentMeId(session?.user?.id);
     });
 
@@ -57,8 +59,11 @@ export const RowAction: FC<Props> = (props) => {
 
   // Strict check: User is authenticated, auction is open, and user is NOT the owner
   const isAuthenticated = Boolean(currentMeId);
-  const isOwner = Boolean(currentMeId && String(currentMeId) === String(auction.ownerId));
-  const isOpenedAuction = String(auction.status).toUpperCase() === AuctionStatusSchema.enum.OPEN;
+  const isOwner = Boolean(
+    currentMeId && String(currentMeId) === String(auction.ownerId),
+  );
+  const isOpenedAuction =
+    String(auction.status).toUpperCase() === AuctionStatusSchema.enum.OPEN;
 
   const canBid = isAuthenticated && !isOwner && isOpenedAuction;
 

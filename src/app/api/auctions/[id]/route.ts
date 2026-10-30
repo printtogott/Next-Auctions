@@ -1,22 +1,22 @@
 export const runtime = "edge";
 
 import { NextResponse } from "next/server";
-import { auctions } from "@/core/instances/auctions";
 import { UpdateAuctionParamsSchema } from "@/core/domains/auction";
+import { auctions } from "@/core/instances/auctions";
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
     const json = await request.json();
-    
+
     // Convert endAt string to a Date object if provided
     if (json.endAt) {
       json.endAt = new Date(json.endAt);
     }
-    
+
     const parsedParams = UpdateAuctionParamsSchema.parse({
       ...json,
       id,
@@ -29,7 +29,7 @@ export async function PUT(
     console.error("API auction update error:", err);
     return NextResponse.json(
       { success: false, message: (err as Error).message ?? "Unknown error" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

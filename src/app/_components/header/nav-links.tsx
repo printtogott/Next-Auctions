@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FC } from "react";
+import { type FC, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -27,7 +27,9 @@ export const NavLinks: FC = () => {
     });
 
     // Listen for sign-in / sign-out changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });

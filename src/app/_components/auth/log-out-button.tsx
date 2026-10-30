@@ -2,9 +2,9 @@
 
 import { Trans, useLingui } from "@lingui/react/macro";
 import { ArrowRightIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { type ComponentProps, type FC, useCallback } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

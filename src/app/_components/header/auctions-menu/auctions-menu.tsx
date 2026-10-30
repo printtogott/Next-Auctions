@@ -14,13 +14,20 @@ import { DisabledNavListItem, NavListItem } from "../nav-list-item";
 import { navMenuItemClasses } from "../navigation-menu-classes";
 
 type Props = {
-  me: User | null;
+  me: (User & { user_metadata?: { verificationStatus?: string } }) | null;
 };
 
 export const AuctionsMenu: FC<Props> = (props) => {
   const { me } = props;
   const { i18n, t } = useLingui();
   const { locale: lang } = i18n;
+
+  const verificationStatus =
+    me?.verificationStatus ??
+    me?.user_metadata?.verificationStatus ??
+    "UNVERIFIED";
+
+  const isVerified = verificationStatus === "VERIFIED";
 
   return (
     <NavigationMenuItem>
@@ -42,7 +49,13 @@ export const AuctionsMenu: FC<Props> = (props) => {
             className="flex justify-center items-center w-full"
           />
 
-          {me ? (
+          {!me ? (
+            <DisabledNavListItem
+              title={t`Create auction`}
+              icon={CirclePlusIcon}
+              disabledLabel={t`Please log in to create auctions.`}
+            />
+          ) : isVerified ? (
             <NavListItem
               title={t`Create auction`}
               icon={CirclePlusIcon}
@@ -53,7 +66,11 @@ export const AuctionsMenu: FC<Props> = (props) => {
             <DisabledNavListItem
               title={t`Create auction`}
               icon={CirclePlusIcon}
-              disabledLabel={t`Please log in to create auctions.`}
+              disabledLabel={
+                verificationStatus === "PENDING"
+                  ? t`Verification under review.`
+                  : t`Identity verification required to create auctions.`
+              }
             />
           )}
         </ul>

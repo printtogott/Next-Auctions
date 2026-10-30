@@ -4,9 +4,16 @@ import z from "zod";
 export const UserRoleSchema = z.enum(["USER", "ADMIN"]);
 export type UserRole = z.infer<typeof UserRoleSchema>;
 
+export const VerificationStatusSchema = z.enum([
+  "UNVERIFIED",
+  "PENDING",
+  "VERIFIED",
+]);
+export type VerificationStatus = z.infer<typeof VerificationStatusSchema>;
+
 // user
 export const UserSchema = z.object({
-  id: z.uuid(),
+  id: z.string().uuid(),
   firstName: z
     .string()
     .min(2, { message: `First name must be at least 2 characters` })
@@ -15,8 +22,12 @@ export const UserSchema = z.object({
     .string()
     .min(2, { message: `Last name must be at least 2 characters` })
     .max(50),
-  email: z.email({ message: `Please enter a valid email address` }),
+  email: z.string().email({ message: `Please enter a valid email address` }),
   avatarUrl: z.string().optional(),
+  verificationStatus: VerificationStatusSchema.default("UNVERIFIED"),
+  idFrontUrl: z.string().optional(),
+  idBackUrl: z.string().optional(),
+  faceIdUrl: z.string().optional(),
   role: UserRoleSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -35,6 +46,10 @@ export const CreateUserParamsSchema = UserSchema.omit({
   updatedAt: true,
   role: true,
   avatarUrl: true,
+  verificationStatus: true,
+  idFrontUrl: true,
+  idBackUrl: true,
+  faceIdUrl: true,
 })
   .extend({ role: UserRoleSchema.optional() })
   .extend({ password: PasswordSchema });
@@ -52,5 +67,8 @@ export const UpdateUserParamsSchema = UserSchema.pick({
   firstName: true,
   lastName: true,
   avatarUrl: true,
-});
+  idFrontUrl: true,
+  idBackUrl: true,
+  faceIdUrl: true,
+}).partial();
 export type UpdateUserParams = z.infer<typeof UpdateUserParamsSchema>;

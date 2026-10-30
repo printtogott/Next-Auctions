@@ -71,7 +71,10 @@ export const BidForm: FC<Props> = (props) => {
         }
       } catch (err) {
         console.error(err);
-        toast.error((err as Error).message || t`Something went wrong, please try again later.`);
+        toast.error(
+          (err as Error).message ||
+            t`Something went wrong, please try again later.`,
+        );
       } finally {
         startTransition(() => {
           handleCloseCaller?.();

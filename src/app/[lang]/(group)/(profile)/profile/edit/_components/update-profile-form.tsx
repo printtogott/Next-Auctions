@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { BookUserIcon } from "lucide-react";
+import { BookUserIcon, ShieldCheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
 import { useForm } from "react-hook-form";
@@ -32,6 +32,9 @@ const DEFAULT_VALUES: UpdateUserParams = {
   firstName: "",
   lastName: "",
   avatarUrl: "",
+  idFrontUrl: "",
+  idBackUrl: "",
+  faceIdUrl: "",
 };
 
 type Props = {
@@ -69,7 +72,9 @@ export const UpdateProfileForm: FC<Props> = (props) => {
         const result = await response.json();
 
         if (response.ok && result.success) {
-          toast.success(t`You successfully updated your profile!`);
+          toast.success(
+            t`You successfully updated your profile! Verification is under review.`,
+          );
           router.push(`/${lang}/profile`);
           router.refresh();
         } else {
@@ -105,6 +110,7 @@ export const UpdateProfileForm: FC<Props> = (props) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="lastName"
@@ -125,11 +131,66 @@ export const UpdateProfileForm: FC<Props> = (props) => {
           )}
         />
 
-        <UppyAvatarUploader
-          userId={userId}
-          fieldName={"avatarUrl"}
-          bucketName={"avatars"}
-        />
+        <div className="space-y-2">
+          <FormLabel className="flex items-center gap-x-2">
+            <Trans>Profile Avatar</Trans>
+          </FormLabel>
+          <UppyAvatarUploader
+            userId={userId}
+            fieldName={"avatarUrl"}
+            bucketName={"avatars"}
+          />
+        </div>
+
+        <div className="border-t pt-6 space-y-6">
+          <div className="space-y-1">
+            <h3 className="text-lg font-medium flex items-center gap-x-2">
+              <ShieldCheckIcon className="size-5 text-primary" />
+              <Trans>Identity Verification</Trans>
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              <Trans>
+                Upload your government-issued ID and a photo of your face to
+                verify your account and create auctions.
+              </Trans>
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <FormLabel>
+                <Trans>ID Front Image</Trans>
+              </FormLabel>
+              <UppyAvatarUploader
+                userId={userId}
+                fieldName={"idFrontUrl"}
+                bucketName={"verification-docs"}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <FormLabel>
+                <Trans>ID Back Image</Trans>
+              </FormLabel>
+              <UppyAvatarUploader
+                userId={userId}
+                fieldName={"idBackUrl"}
+                bucketName={"verification-docs"}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <FormLabel>
+                <Trans>Face / Selfie Image</Trans>
+              </FormLabel>
+              <UppyAvatarUploader
+                userId={userId}
+                fieldName={"faceIdUrl"}
+                bucketName={"verification-docs"}
+              />
+            </div>
+          </div>
+        </div>
 
         <Button
           className="max-sm:w-full sm:flex sm:justify-self-end cursor-pointer"
