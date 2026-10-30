@@ -1,6 +1,12 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing RESEND_API_KEY environment variable.");
+  }
+  return new Resend(apiKey);
+}
 
 type VerificationEmailParams = {
   userId: string;
@@ -19,8 +25,8 @@ export async function sendAdminVerificationEmail({
   idBackUrl,
   faceIdUrl,
 }: VerificationEmailParams) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "https://next-auctions.pages.dev";
+  const resend = getResendClient();
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://next-auctions.pages.dev";
   const approveUrl = `${baseUrl}/api/admin/verify-user?userId=${userId}&action=VERIFIED`;
   const rejectUrl = `${baseUrl}/api/admin/verify-user?userId=${userId}&action=REJECTED`;
 
