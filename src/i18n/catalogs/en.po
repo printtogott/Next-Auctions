@@ -219,6 +219,9 @@ msgstr "Enter your email and password to login."
 msgid "Español"
 msgstr "Español"
 
+msgid "Face / Selfie Image"
+msgstr "Face / Selfie Image"
+
 msgid "Failed to upload avatar. Please try again."
 msgstr "Failed to upload avatar. Please try again."
 
@@ -266,6 +269,18 @@ msgstr "Highest Bid"
 
 msgid "Home"
 msgstr "Home"
+
+msgid "ID Back Image"
+msgstr "ID Back Image"
+
+msgid "ID Front Image"
+msgstr "ID Front Image"
+
+msgid "Identity Verification"
+msgstr "Identity Verification"
+
+msgid "Identity verification required to create auctions."
+msgstr "Identity verification required to create auctions."
 
 msgid "Images"
 msgstr "Images"
@@ -404,6 +419,9 @@ msgstr "Please log in to create auctions."
 
 msgid "Product image"
 msgstr "Product image"
+
+msgid "Profile Avatar"
+msgstr "Profile Avatar"
 
 msgid "Reload Page"
 msgstr "Reload Page"
@@ -579,6 +597,9 @@ msgstr "Upload up to 3 images"
 msgid "Upload your avatar"
 msgstr "Upload your avatar"
 
+msgid "Upload your government-issued ID and a photo of your face to verify your account and create auctions."
+msgstr "Upload your government-issued ID and a photo of your face to verify your account and create auctions."
+
 msgid "Upload your new avatar?"
 msgstr "Upload your new avatar?"
 
@@ -590,6 +611,12 @@ msgstr "user"
 
 msgid "User profile card"
 msgstr "User profile card"
+
+msgid "Verification under review."
+msgstr "Verification under review."
+
+msgid "Verify Now"
+msgstr "Verify Now"
 
 msgid "View auction"
 msgstr "View auction"
@@ -624,8 +651,11 @@ msgstr "You successfully signed up! Please check your email for verification."
 msgid "You successfully updated your auction!"
 msgstr "You successfully updated your auction!"
 
-msgid "You successfully updated your profile!"
-msgstr "You successfully updated your profile!"
+#~ msgid "You successfully updated your profile!"
+#~ msgstr "You successfully updated your profile!"
+
+msgid "You successfully updated your profile! Verification is under review."
+msgstr "You successfully updated your profile! Verification is under review."
 
 msgid "You won and paid for this auction."
 msgstr "You won and paid for this auction."
@@ -635,6 +665,12 @@ msgstr "You won! Proceed to payment."
 
 msgid "You're currently the highest bidder!"
 msgstr "You're currently the highest bidder!"
+
+msgid "Your account is unverified. Please upload your identity documents to unlock auction creation features."
+msgstr "Your account is unverified. Please upload your identity documents to unlock auction creation features."
+
+msgid "Your identity verification is currently under review. Auction creation will be enabled once approved."
+msgstr "Your identity verification is currently under review. Auction creation will be enabled once approved."
 
 msgid "Your image will be uploaded now, but it won't update your profile until you click “Update your profile”."
 msgstr "Your image will be uploaded now, but it won't update your profile until you click “Update your profile”."

@@ -210,6 +210,9 @@ msgstr ""
 msgid "Español"
 msgstr ""
 
+msgid "Face / Selfie Image"
+msgstr ""
+
 msgid "Failed to upload avatar. Please try again."
 msgstr ""
 
@@ -247,6 +250,18 @@ msgid "Highest Bid"
 msgstr ""
 
 msgid "Home"
+msgstr ""
+
+msgid "ID Back Image"
+msgstr ""
+
+msgid "ID Front Image"
+msgstr ""
+
+msgid "Identity Verification"
+msgstr ""
+
+msgid "Identity verification required to create auctions."
 msgstr ""
 
 msgid "Images"
@@ -379,6 +394,9 @@ msgid "Please log in to create auctions."
 msgstr ""
 
 msgid "Product image"
+msgstr ""
+
+msgid "Profile Avatar"
 msgstr ""
 
 msgid "Reload Page"
@@ -549,6 +567,9 @@ msgstr ""
 msgid "Upload your avatar"
 msgstr ""
 
+msgid "Upload your government-issued ID and a photo of your face to verify your account and create auctions."
+msgstr ""
+
 msgid "Upload your new avatar?"
 msgstr ""
 
@@ -559,6 +580,12 @@ msgid "user"
 msgstr ""
 
 msgid "User profile card"
+msgstr ""
+
+msgid "Verification under review."
+msgstr ""
+
+msgid "Verify Now"
 msgstr ""
 
 msgid "View auction"
@@ -588,7 +615,10 @@ msgstr ""
 msgid "You successfully updated your auction!"
 msgstr ""
 
-msgid "You successfully updated your profile!"
+#~ msgid "You successfully updated your profile!"
+#~ msgstr ""
+
+msgid "You successfully updated your profile! Verification is under review."
 msgstr ""
 
 msgid "You won and paid for this auction."
@@ -598,6 +628,12 @@ msgid "You won! Proceed to payment."
 msgstr ""
 
 msgid "You're currently the highest bidder!"
+msgstr ""
+
+msgid "Your account is unverified. Please upload your identity documents to unlock auction creation features."
+msgstr ""
+
+msgid "Your identity verification is currently under review. Auction creation will be enabled once approved."
 msgstr ""
 
 msgid "Your image will be uploaded now, but it won't update your profile until you click “Update your profile”."
